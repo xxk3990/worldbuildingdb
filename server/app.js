@@ -1,12 +1,16 @@
 const express = require('express');
 const router = require("./router")
 const {sequelize} = require('./models')
+const cors = require('cors')
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const app = express();
 
 app.use(express.json());
+app.use(cors({
+    origin: `*`
+}))
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));

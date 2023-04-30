@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/xxk3990/worldbuildingdb#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "create-react-app": "^5.0.1",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
