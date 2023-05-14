@@ -26,7 +26,7 @@ export default function Users() {
 
   const postUsers = () => {
     const postURL = `http://localhost:3000/addUser`
-    const requestParams = {
+    const requestBody = {
       username: username,
       email: email,
       password: password,
@@ -34,13 +34,13 @@ export default function Users() {
       last_name: lastname,
       dob: dob,
     }
-    console.log('Params:', requestParams)
-    const requestBody = {
+    console.log('Params:', requestBody)
+    const requestParams = {
       method: 'POST',
       headers: {"Content-Type": 'application/json'},
-      body: JSON.stringify(requestParams)
+      body: JSON.stringify(requestBody)
     }
-    return fetch(postURL, requestBody)
+    return fetch(postURL, requestParams)
   
   }
 
@@ -66,7 +66,7 @@ export default function Users() {
             <span className='user-form-question'id="first-name">First name: <input type='name' name='firstname' className='user-input'value={firstname} onChange={e => setFirstName(e.target.value)}/></span>
             <span className='user-form-question'id="last-name">Last name: <input type='name' name='lastname' className='user-input'value={lastname} onChange={e => setLastName(e.target.value)}/></span>
             <span className='user-form-question'id="date-of-birth">Date of Birth: <input type='date' name='dob' className='name-input' min="1970-01-01" max="2023-12-31"value={dob} onChange={e => setDOB(e.target.value.toString())}/></span>
-            <button type='button' onClick={postUsers}>Submit</button>
+            <button type='submit' onClick={postUsers}>Submit</button>
         </section>
       </div>
     );
