@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/xxk3990/worldbuildingdb#readme",
   "dependencies": {
+    "@types/sequelize": "^4.28.15",
     "cors": "^2.8.5",
     "create-react-app": "^5.0.1",
     "dotenv": "^16.0.3",
@@ -27,7 +28,8 @@
     "pg-hstore": "^2.3.4",
     "postgres": "^3.3.4",
     "sequelize": "^6.31.0",
-    "sequelize-cli": "^6.6.0"
+    "sequelize-cli": "^6.6.0",
+    "sequelize-utils": "^0.0.14"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
