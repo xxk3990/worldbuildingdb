@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+//SWITCH TO SEQUELIZE.DEFINE INSTEAD OF CLASS USER EXTENDS MODEL
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -17,7 +18,8 @@ module.exports = (sequelize, DataTypes) => {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
-      allowNull: false
+      allowNull: false,
+      autoIncrement: true
     },
     username: DataTypes.STRING,
     email: DataTypes.STRING,
@@ -32,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
       tableName: 'users',
       underscored: true
     });
-    sequelize.sync()
+    sequelize.sync() // You can run without syncing, mess around with it
   return User;
 };
 

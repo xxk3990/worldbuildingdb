@@ -42,3 +42,7 @@
     transform: rotate(360deg);
   }
 }
+
+.links {
+  list-style-type: none;
+}
