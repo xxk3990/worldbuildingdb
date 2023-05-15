@@ -1,11 +1,15 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const seq = new Sequelize('database')
+const seq = new Sequelize('postgres')
 const World = seq.define('World', {
-    id: {
-        type: DataTypes.INTEGER,
+    id: { 
+        type: DataTypes.UUID,
         primaryKey: true,
         allowNull: false,
-        autoIncrement: true
+        unique: true
+    },
+    user_uuid: {
+        type: DataTypes.UUID,
+        allowNull: false
     },
     name: {
         type: DataTypes.STRING
@@ -21,6 +25,9 @@ const World = seq.define('World', {
     underscored: true,
     modelName: 'World',
     tableName: 'worlds',
+    associate:(models)=> {
+        World.belongsTo(models.user,{foreignKey:'user_uuid'})
+    }
 })
 
 module.exports = {World}

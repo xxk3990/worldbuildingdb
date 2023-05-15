@@ -5,6 +5,7 @@ const models = require('../models')
 
 const getUsers = async (req, res) => {
     const users = await models.User.findAll()
+    //include find
     return res.json(users);
 }
 const addUser = (req, res ) => {

@@ -2,7 +2,6 @@
 const {
   Model
 } = require('sequelize');
-//SWITCH TO SEQUELIZE.DEFINE INSTEAD OF CLASS USER EXTENDS MODEL
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -12,14 +11,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+    //  User.hasMany(models.World)
     }
   }
   User.init({
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       primaryKey: true,
       allowNull: false,
-      autoIncrement: true
+      unique: true
     },
     username: DataTypes.STRING,
     email: DataTypes.STRING,

@@ -1,2 +1,2 @@
-module.exports.users = require('./user-controller')
+module.exports.users = require('./users-controller')
 
