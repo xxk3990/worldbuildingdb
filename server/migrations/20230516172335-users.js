@@ -2,24 +2,29 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('worlds', {
+    await queryInterface.createTable('users', {
         id: {
             type: Sequelize.UUID,
             primaryKey: true,
             allowNull: false,
-            unique: true
+            autoIncrementIdentity: true
         },
-        user_uuid: {
-            type: Sequelize.UUID,
-            allowNull: false
-        },
-        name: {
+        username: {
             type: Sequelize.STRING
         },
-        world_type: {
+        email: {
             type: Sequelize.STRING
         },
-        description: {
+        password: {
+            type: Sequelize.STRING
+        },
+        first_name: {
+            type: Sequelize.STRING
+        },
+        last_name: {
+            type: Sequelize.STRING
+        },
+        dob: {
             type: Sequelize.STRING
         },
         created_at: {
@@ -31,8 +36,8 @@ module.exports = {
             type: Sequelize.DATE
         }
     });
-  },
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('worlds');
-  }
+},
+    async down(queryInterface, Sequelize) {
+        await queryInterface.dropTable('users');
+    }
 };

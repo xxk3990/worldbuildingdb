@@ -29,7 +29,8 @@
     "postgres": "^3.3.4",
     "sequelize": "^6.31.0",
     "sequelize-cli": "^6.6.0",
-    "sequelize-utils": "^0.0.14"
+    "sequelize-utils": "^0.0.14",
+    "uuidv4": "^6.2.13"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
