@@ -23,7 +23,8 @@ export default function Users() {
   useEffect(() => {
    fetchUsers();
   }, [])
-
+  //TODO: Create one single useState() that contains all the variable declarations and then create 
+  //a generic handle change method to set the value of each
   const postUsers = () => {
     const postURL = `http://localhost:3000/addUser`
     const requestBody = {
@@ -40,6 +41,7 @@ export default function Users() {
       headers: {"Content-Type": 'application/json'},
       body: JSON.stringify(requestBody)
     }
+    //DO FETCH INSIDE TRY/CATCH. IMPLEMENT CLEAR FORM METHOD
     return fetch(postURL, requestParams)
   
   }

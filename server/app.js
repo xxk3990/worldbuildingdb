@@ -1,7 +1,7 @@
 const express = require('express');
-const router = require("./router")
-const {sequelize} = require('./models')
-const cors = require('cors')
+const router = require("./router");
+const {sequelize} = require('./models');
+const cors = require('cors');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
@@ -27,12 +27,12 @@ const connectToDB = async () => {
 }
 
 (async () => {
-    connectToDB()
-    router(app)
+    await connectToDB();
+    router(app);
     app.listen(port, (err) => {
         if(err) {
             throw err;
         }
         console.log(`Listening on port ${port}`);
-    })
-})()
+    });
+})();

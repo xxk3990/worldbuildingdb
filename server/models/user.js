@@ -1,25 +1,11 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
-//SWITCH TO SEQUELIZE.DEFINE INSTEAD OF CLASS USER EXTENDS MODEL
-module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
-  }
-  User.init({
+const userModel = (sequelize, DataTypes) => {
+  const User = sequelize.define('User', {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       primaryKey: true,
       allowNull: false,
-      autoIncrement: true
+      autoIncrementIdentity: true
     },
     username: DataTypes.STRING,
     email: DataTypes.STRING,
@@ -34,7 +20,8 @@ module.exports = (sequelize, DataTypes) => {
       tableName: 'users',
       underscored: true
     });
-    sequelize.sync() // You can run without syncing, mess around with it
   return User;
-};
+}
+
+module.exports = {userModel}
 

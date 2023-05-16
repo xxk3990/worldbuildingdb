@@ -1,15 +1,23 @@
 // const {Client} = require('pg')
 
 //const { now } = require('sequelize/types/utils');
+const {v4: uuidv4} = require('uuid')
 const models = require('../models')
 
 const getUsers = async (req, res) => {
     const users = await models.User.findAll()
-    return res.json(users);
+    //include find
+    if(users !== undefined) {
+        return res.json(users);
+    } else {
+        return res.json({"message": "No users added yet."})
+    }
+    
 }
 const addUser = (req, res ) => {
     console.log('Body:',req.body);
     const newUser = {
+        id: uuidv4(),
         username: req.body.username,
         email: req.body.email,
         password: req.body.password,
