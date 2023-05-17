@@ -27,6 +27,7 @@ const addUser = (req, res ) => {
         // created_at: now,
         // updated_at: now
     }
+    res.send(201, {status: 'success!'})
     return models.User.create(newUser);
 }
 module.exports = {getUsers, addUser}
