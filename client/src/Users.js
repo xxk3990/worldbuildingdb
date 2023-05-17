@@ -29,8 +29,7 @@ export default function Users() {
   const changeHandler = (name, value) => {
     setNewUser({...newUser, [name]:value})
   }
-  //TODO: Create one single useState() that contains all the variable declarations and then create 
-  //a generic handle change method to set the value of each
+  
   const postUsers = async () => {
     const postURL = `http://localhost:3000/addUser`
     const requestBody = {
