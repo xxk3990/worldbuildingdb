@@ -3,13 +3,15 @@ import './App.css';
 import React, { useState, useMemo, useEffect, useRef, createContext, useContext}  from 'react';
 
 export default function Users() {
+  const [newUser, setNewUser] = useState({
+    username: '',
+    email: '',
+    password: '',
+    firstname: '',
+    lastname: '',
+    dob: ''
+  })
   const [users, setUsers] = useState([]);
-  const [username, setUsername] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [firstname, setFirstName] = useState("")
-  const [lastname, setLastName] = useState("")
-  const [dob, setDOB] = useState("")
   const fetchUsers = () => {
     const url = `http://localhost:3000/users`;
     fetch(url, {
@@ -23,17 +25,21 @@ export default function Users() {
   useEffect(() => {
    fetchUsers();
   }, [])
+
+  const changeHandler = (name, value) => {
+    setNewUser({...newUser, [name]:value})
+  }
   //TODO: Create one single useState() that contains all the variable declarations and then create 
   //a generic handle change method to set the value of each
-  const postUsers = () => {
+  const postUsers = async () => {
     const postURL = `http://localhost:3000/addUser`
     const requestBody = {
-      username: username,
-      email: email,
-      password: password,
-      first_name: firstname,
-      last_name: lastname,
-      dob: dob,
+      username: newUser.username,
+      email: newUser.email,
+      password: newUser.password,
+      first_name: newUser.firstname,
+      last_name: newUser.lastname,
+      dob: newUser.dob,
     }
     console.log('Params:', requestBody)
     const requestParams = {
@@ -42,7 +48,25 @@ export default function Users() {
       body: JSON.stringify(requestBody)
     }
     //DO FETCH INSIDE TRY/CATCH. IMPLEMENT CLEAR FORM METHOD
-    return fetch(postURL, requestParams)
+    try {
+      const response = await fetch(postURL, requestParams)
+      const data = await response.json()
+      if(response.status === 200 || response.status === 201) {
+        setUsers([...users, data])
+        setNewUser({
+          username:'',
+          email: '',
+          password:'',
+          firstname: '',
+          lastname: '',
+          dob:''
+        })
+      } else {
+        alert("An error occurred.")
+      }
+    } catch {
+      alert("An error occurred.")
+    }
   
   }
 
@@ -62,12 +86,12 @@ export default function Users() {
           </section>
         <section className='add-user'>
           <h4>Add a user!</h4>
-            <span className='user-form-question' id="username">Username: <input type='text' name='username' className='user-input' value={username} onChange={e => setUsername(e.target.value)}/></span>
-            <span className='user-form-question' id="email">Email: <input type='email' name='email' className='user-input'value={email} onChange={e => setEmail(e.target.value)}/></span>
-            <span className='user-form-question'id="password">Password: <input type='password' name='password' className='name-input'value={password} onChange={e => setPassword(e.target.value)}/></span>
-            <span className='user-form-question'id="first-name">First name: <input type='name' name='firstname' className='user-input'value={firstname} onChange={e => setFirstName(e.target.value)}/></span>
-            <span className='user-form-question'id="last-name">Last name: <input type='name' name='lastname' className='user-input'value={lastname} onChange={e => setLastName(e.target.value)}/></span>
-            <span className='user-form-question'id="date-of-birth">Date of Birth: <input type='date' name='dob' className='name-input' min="1970-01-01" max="2023-12-31"value={dob} onChange={e => setDOB(e.target.value.toString())}/></span>
+            <span className='user-form-question' id="username">Username: <input type='text' name='username' className='user-input' value={newUser.username} onChange={e => changeHandler(e.target.name, e.target.value)}/></span>
+            <span className='user-form-question' id="email">Email: <input type='email' name='email' className='user-input'value={newUser.email} onChange={e => changeHandler(e.target.name, e.target.value)}/></span>
+            <span className='user-form-question'id="password">Password: <input type='password' name='password' className='name-input'value={newUser.password} onChange={e => changeHandler(e.target.name, e.target.value)}/></span>
+            <span className='user-form-question'id="first-name">First name: <input type='name' name='firstname' className='user-input'value={newUser.firstname} onChange={e => changeHandler(e.target.name, e.target.value)}/></span>
+            <span className='user-form-question'id="last-name">Last name: <input type='name' name='lastname' className='user-input'value={newUser.lastname} onChange={e => changeHandler(e.target.name, e.target.value)}/></span>
+            <span className='user-form-question'id="date-of-birth">Date of Birth: <input type='date' name='dob' className='name-input' min="1970-01-01" max="2023-12-31"value={newUser.dob} onChange={e => changeHandler(e.target.name, e.target.value.toString())}/></span>
             <button type='button' onClick={postUsers}>Submit</button>
         </section>
       </div>
