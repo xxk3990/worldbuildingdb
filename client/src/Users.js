@@ -47,7 +47,6 @@ export default function Users() {
       headers: {"Content-Type": 'application/json'},
       body: JSON.stringify(requestBody)
     }
-    //DO FETCH INSIDE TRY/CATCH. IMPLEMENT CLEAR FORM METHOD
     try {
       const response = await fetch(postURL, requestParams)
       const data = await response.json()
