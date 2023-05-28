@@ -13,13 +13,26 @@ const userModel = (sequelize, DataTypes) => {
     first_name: DataTypes.STRING,
     last_name: DataTypes.STRING,
     dob: DataTypes.STRING,
+    world_uuid: {
+      type: DataTypes.UUID,
+    },
     }, 
     {
       sequelize,
       modelName: 'User',
       tableName: 'users',
       underscored: true
-    });
+    },
+    {
+      // classMethods: {
+      //   associate:(models) => {
+      //     User.hasMany(models.World, {
+      //       foreignkey: 'world_uuid'
+      //     })
+      //   }
+      // }
+    }
+    );
   return User;
 }
 

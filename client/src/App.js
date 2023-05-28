@@ -4,6 +4,8 @@ import React, { useState, useMemo, useEffect, useRef, createContext, useContext}
 import { ReactDOM } from 'react';
 import {Routes, Route, useNavigate} from 'react-router-dom';
 import Users from "./Users"
+import CreateAccount from './CreateAccount';
+import Worlds from './Worlds';
 
 export default function App() {
   const navigate = useNavigate();
@@ -20,6 +22,8 @@ export default function App() {
       </section>
         <Routes>
           <Route path="users" element={<Users />} />
+          <Route path="createAccount" element={<CreateAccount />} />
+          <Route path="worlds" element={<Worlds />} />
         </Routes>
       
     </div>

@@ -27,6 +27,9 @@ module.exports = {
         dob: {
             type: Sequelize.STRING
         },
+        world_uuid: {
+            type: Sequelize.UUID,
+        },
         created_at: {
             allowNull: false,
             type: Sequelize.DATE
