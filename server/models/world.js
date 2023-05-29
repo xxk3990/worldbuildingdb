@@ -24,12 +24,6 @@ const worldModel = (sequelize, DataTypes) => {
         underscored: true,
         modelName: 'World',
         tableName: 'worlds',
-    }, {
-        classMethods: {
-            associate:(models)=> {
-                World.belongsTo(models.User,{foreignKey:'user_uuid'})
-            }
-        }
     })
     return World
 }

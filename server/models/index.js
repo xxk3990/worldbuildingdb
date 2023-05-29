@@ -16,6 +16,11 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
   host: 'localhost',
 })
 
+const models = {
+  User: userModel(sequelize, Sequelize.DataTypes),
+  World: worldModel(sequelize, Sequelize.DataTypes)
+}
+
 fs
   .readdirSync(__dirname)
   .filter(file => {
@@ -27,10 +32,6 @@ fs
     );
   })
   .forEach(() => {
-    const models = {
-      User: userModel(sequelize, Sequelize.DataTypes),
-      World: worldModel(sequelize, Sequelize.DataTypes)
-    }
     for(const m of Object.values(models)) {
       console.log(m)
       db[m.name] = m;
@@ -41,12 +42,20 @@ fs
     
   });
 
-Object.keys(db).forEach(modelName => {
+  models.User.hasMany(models.World, {
+    as: 'worlds_created',
+    foreignKey: 'user_uuid'
+  })
 
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-});
+  models.World.belongsTo(models.User, {
+    as: 'world_owner',
+    foreignKey:'user_uuid'
+  })
+
+ 
+
+
+
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

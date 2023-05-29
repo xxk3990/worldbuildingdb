@@ -19,7 +19,17 @@ const userModel = (sequelize, DataTypes) => {
       modelName: 'User',
       tableName: 'users',
       underscored: true
-    });
+    },
+    {
+      // classMethods: {
+      //   associate:(models) => {
+      //     User.hasMany(models.World, {
+      //       foreignkey: 'world_uuid'
+      //     })
+      //   }
+      // }
+    }
+    );
   return User;
 }
 

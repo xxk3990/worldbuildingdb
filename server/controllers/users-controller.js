@@ -5,7 +5,13 @@ const {v4: uuidv4} = require('uuid')
 const models = require('../models')
 
 const getUsers = async (req, res) => {
-    const users = await models.User.findAll()
+    const users = await models.User.findAll({ 
+        include: [{
+            model: models.World,
+            attributes: ["world_name", "world_type"],
+            as: "worlds_created"
+        }],
+    })
     //include find
     if(users !== undefined) {
         return res.json(users);
@@ -27,7 +33,7 @@ const addUser = (req, res ) => {
         // created_at: now,
         // updated_at: now
     }
-    res.send(201, {status: 'success!'})
+    res.status(201).send({status: 'success!'})
     return models.User.create(newUser);
 }
 module.exports = {getUsers, addUser}
