@@ -26,19 +26,14 @@ export default function Worlds() {
   }, [])
 
   const fetchWorlds = () => {
-    if(newWorld.user === '') {
-      return;
-    } else {
-      const url = `http://localhost:3000/worlds`;
-      fetch(url, {
-          method: 'GET',
-      }).then(response => {
-        return response.json();
-      }, []).then(data => {
-        setWorlds(data)
-      })
-    }
-    
+    const url = `http://localhost:3000/worlds`;
+    fetch(url, {
+        method: 'GET',
+    }).then(response => {
+      return response.json();
+    }, []).then(data => {
+      setWorlds(data)
+    })
   }
   useEffect(() => {
     fetchWorlds();
