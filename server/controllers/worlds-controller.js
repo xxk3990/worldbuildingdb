@@ -8,7 +8,7 @@ const getWorlds = async (req, res) => {
     const worlds = models.World.findAll({
         include: [{
             model: models.User,
-            attributes: ["first_name", "last_name"],
+            attributes: ["id"],
             as: "world_owner"
         }],
     })
