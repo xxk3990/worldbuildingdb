@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import React, { useState, useMemo, useEffect, useRef, createContext, useContext}  from 'react';
+import React, { useState, useMemo, useEffect}  from 'react';
 
 export default function Worlds() {
   const [newWorld, setNewWorld] = useState({
@@ -10,7 +10,7 @@ export default function Worlds() {
     description: ''
   })
   const [users, setUsers] = useState([]);
-  const [world, setWorld] = useState([])
+  const [worlds, setWorlds] = useState([])
   const fetchUsers = () => {
     const url = `http://localhost:3000/users`;
     fetch(url, {
@@ -23,6 +23,25 @@ export default function Worlds() {
   }
   useEffect(() => {
    fetchUsers();
+  }, [])
+
+  const fetchWorlds = () => {
+    if(newWorld.user === '') {
+      return;
+    } else {
+      const url = `http://localhost:3000/worlds`;
+      fetch(url, {
+          method: 'GET',
+      }).then(response => {
+        return response.json();
+      }, []).then(data => {
+        setWorlds(data)
+      })
+    }
+    
+  }
+  useEffect(() => {
+    fetchWorlds();
   }, [])
 
   const handleChange = (name, value) => {
@@ -47,7 +66,7 @@ export default function Worlds() {
       const response = await fetch(postURL, requestParams)
       const data = await response.json()
       if(response.status === 200 || response.status === 201) {
-        setWorld([...world, data])
+        setWorlds([...worlds, data])
         setNewWorld({
           worldName: '',
           worldType: '',
@@ -63,7 +82,7 @@ export default function Worlds() {
   
   }
 
-  if(world === undefined) {
+  if(worlds === undefined) {
     return (
       <div className="Worlds">
         No world found.
@@ -73,7 +92,7 @@ export default function Worlds() {
     return (
       <div className="Worlds">
         <section className = "data-grid">
-            {world.map(w => {
+            {worlds.map(w => {
               return <WorldCard w={w}/>
             })}
           </section>

@@ -42,15 +42,17 @@ fs
     
   });
 
+  models.User.hasMany(models.World, {
+    as: 'worlds_created',
+    foreignKey: 'user_uuid'
+  })
+
   models.World.belongsTo(models.User, {
     as: 'world_owner',
     foreignKey:'user_uuid'
   })
 
-  models.User.hasMany(models.World, {
-    as: 'worlds_created',
-    foreignKey: 'world_uuid'
-  })
+ 
 
 
 

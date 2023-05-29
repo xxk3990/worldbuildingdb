@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import React, { useState, useMemo, useEffect, useRef, createContext, useContext}  from 'react';
+import React, { useState, useMemo, useEffect}  from 'react';
 
 export default function CreateAccount() {
   const [newUser, setNewUser] = useState({
@@ -16,7 +16,7 @@ export default function CreateAccount() {
     setNewUser({...newUser, [name]:value})
   }
   
-  const postUsers = async () => {
+  const postUser = async () => {
     const postURL = `http://localhost:3000/addUser`
     const requestBody = {
       username: newUser.username,
@@ -65,7 +65,7 @@ export default function CreateAccount() {
             <span className='user-form-question'id="first-name">First name: <input type='name' name='firstname' className='user-input'value={newUser.firstname} onChange={e => handleChange(e.target.name, e.target.value)}/></span>
             <span className='user-form-question'id="last-name">Last name: <input type='name' name='lastname' className='user-input'value={newUser.lastname} onChange={e => handleChange(e.target.name, e.target.value)}/></span>
             <span className='user-form-question'id="date-of-birth">Date of Birth: <input type='date' name='dob' className='name-input' min="1970-01-01" max="2023-12-31"value={newUser.dob} onChange={e => handleChange(e.target.name, e.target.value.toString())}/></span>
-            <button type='button' onClick={postUsers}>Submit</button>
+            <button type='button' onClick={postUser}>Submit</button>
         </section>
       </div>
     );
