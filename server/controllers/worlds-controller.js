@@ -5,12 +5,12 @@ const models = require('../models')
 
 const getWorlds = async (req, res) => {
     //TODO: Figure out how to get specific user's uuid 
-    const worlds = models.World.findAll({
+    const worlds = await models.World.findAll({
         include: [{
             model: models.User,
             attributes: ["id"],
             as: "world_owner"
-        }],
+        }]
     })
     if(worlds !== undefined) {
         return res.json(worlds)
