@@ -7,15 +7,7 @@ export default function Login() {
         email: '',
         password: ''
     })
-    const [showAlert, setShowAlert] = useState(true)
-    useEffect(() => {
-      const alertTimer = setTimeout(() => {
-        setShowAlert(false)
-      }, 3000)
-      return () => {
-        clearTimeout(alertTimer)
-      }
-    })
+
     const handleChange = (name, value) => {
       setLogin({...login, [name]:value})
     }
