@@ -30,6 +30,7 @@ const addUser = (req, res ) => {
         first_name: req.body.first_name,
         last_name: req.body.last_name,
         dob: req.body.dob,
+        user_role: req.body.user_role
         // created_at: now,
         // updated_at: now
     }
