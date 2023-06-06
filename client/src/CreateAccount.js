@@ -9,7 +9,8 @@ export default function CreateAccount() {
     password: '',
     firstname: '',
     lastname: '',
-    dob: ''
+    dob: '',
+    role: ''
   })
 
   const handleChange = (name, value) => {
@@ -25,6 +26,7 @@ export default function CreateAccount() {
       first_name: newUser.firstname,
       last_name: newUser.lastname,
       dob: newUser.dob,
+      user_role: newUser.role
     }
     console.log('Params:', requestBody)
     const requestParams = {
@@ -43,7 +45,8 @@ export default function CreateAccount() {
           password:'',
           firstname: '',
           lastname: '',
-          dob:''
+          dob:'',
+          role: ''
         })
       } else {
         alert("An error occurred.")
@@ -65,6 +68,14 @@ export default function CreateAccount() {
             <span className='user-form-question'id="first-name">First name: <input type='name' name='firstname' className='user-input'value={newUser.firstname} onChange={e => handleChange(e.target.name, e.target.value)}/></span>
             <span className='user-form-question'id="last-name">Last name: <input type='name' name='lastname' className='user-input'value={newUser.lastname} onChange={e => handleChange(e.target.name, e.target.value)}/></span>
             <span className='user-form-question'id="date-of-birth">Date of Birth: <input type='date' name='dob' className='name-input' min="1970-01-01" max="2023-12-31"value={newUser.dob} onChange={e => handleChange(e.target.name, e.target.value.toString())}/></span>
+            <span className='user-form-question' id="user-role">
+              Type of User: 
+              <select value={newUser.role} name='role' className='user-input' onChange={ e => handleChange(e.target.name, e.target.value)}>
+                <option>Select User Type</option>
+                <option value="User">User</option>
+                <option value="Admin">Admin</option>
+              </select>
+            </span>
             <button type='button' onClick={postUser}>Submit</button>
         </section>
       </div>

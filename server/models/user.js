@@ -13,6 +13,7 @@ const userModel = (sequelize, DataTypes) => {
     first_name: DataTypes.STRING,
     last_name: DataTypes.STRING,
     dob: DataTypes.STRING,
+    user_role: DataTypes.STRING,
     }, 
     {
       sequelize,
