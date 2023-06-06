@@ -3,6 +3,8 @@
 //const { now } = require('sequelize/types/utils');
 const {v4: uuidv4} = require('uuid')
 const models = require('../models')
+const jwt = require('jsonwebtoken')
+const process = require("process")
 
 const getUsers = async (req, res) => {
     const users = await models.User.findAll({ 
@@ -20,7 +22,7 @@ const getUsers = async (req, res) => {
     }
     
 }
-const addUser = (req, res ) => {
+const createAccount = (req, res ) => {
     console.log('Body:',req.body);
     const newUser = {
         id: uuidv4(),
@@ -37,4 +39,23 @@ const addUser = (req, res ) => {
     res.status(201).send({status: 'success!'})
     return models.User.create(newUser);
 }
-module.exports = {getUsers, addUser}
+
+const login = async (req, res) => {
+    const matchingUser = await models.User.findAll({where: {'email': req.body.email, password: req.body.password}, raw: true})
+    if(matchingUser[0].email !== req.body.email || matchingUser[0].password !== req.body.password) {
+        return res.status(401).send({status: "Email or password does not match records."})
+    } else {
+        const session = uuidv4();
+        const secret = process.env.SECRET; //grab secret
+        const token = jwt.sign({id: matchingUser[0].id}, secret, {expiresIn: 7200} ) //set session up
+    
+        return res.status(200).send({ //return accessToken
+            user: matchingUser[0].id,
+            email: matchingUser[0].email,
+            user_role: matchingUser[0].user_role,
+            session_id: session,
+            accessToken: token
+        })
+    }
+}
+module.exports = {getUsers, createAccount, login}

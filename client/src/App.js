@@ -6,6 +6,7 @@ import {Routes, Route, useNavigate} from 'react-router-dom';
 import Users from "./Users"
 import CreateAccount from './CreateAccount';
 import Worlds from './Worlds';
+import Login from './Login';
 
 export default function App() {
   const navigate = useNavigate();
@@ -13,20 +14,46 @@ export default function App() {
   const viewUsers = () => {
     navigate('/users', {replace: true})
   }
-  return (
-    <div>
-      <section className='routes'>
+  
+  const isLoggedIn = localStorage.getItem("authToken")
+  if(isLoggedIn === null) {
+    const login = () => {
+      navigate('/login', {replace: true})
+    }
+    const createAccount = () => {
+      navigate('/CreateAccount', {replace: true})
+    }
+    return (
+      <div className='App'>
         <ul className="links">
-          <li className="links-li"><button onClick={viewUsers}>View Users</button></li>
+            <li className="links-li"><button onClick={login}>Login</button></li>
+            <li className="links-li"><button onClick={createAccount}>Create Account</button></li>
         </ul>
-      </section>
         <Routes>
-          <Route path="users" element={<Users />} />
+          <Route path="login" element={<Login />} />
           <Route path="createAccount" element={<CreateAccount />} />
-          <Route path="worlds" element={<Worlds />} />
         </Routes>
-      
-    </div>
-  );
+      </div>
+    )
+  } else {
+    const viewWorlds = () => {
+      navigate('/worlds', {replace: true})
+    }
+    return (
+      <div className='App'>
+        <section className='routes'>
+          <ul className="links">
+            <li className="links-li"><button onClick={viewWorlds}>Your Worlds</button></li>
+          </ul>
+        </section>
+          <Routes>
+            <Route path="worlds" element={<Worlds />} />
+          </Routes>
+        
+      </div>
+    );
+  }
+
+
 
 }
