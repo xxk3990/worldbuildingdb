@@ -3,9 +3,8 @@ const {
 } = require('uuid')
 const models = require('../models')
 
-const getWorlds = async (req, res) => {
-    //TODO: Figure out how to get specific user's uuid 
-    const worlds = await models.World.findAll({
+const getWorlds = async (req, res) => { 
+    const worlds = await models.World.findAll({where: {'user_uuid' : req.query.id}},{
         include: [{
             model: models.User,
             attributes: ["id"],
@@ -20,7 +19,7 @@ const getWorlds = async (req, res) => {
 }
 
 const addWorld = async (req, res) => {
-    const worldOwner = await models.User.findAll({where: {'username' : req.body.user}, raw: true})
+    const worldOwner = await models.User.findAll({where: {'id' : req.body.user}, raw: true})
     console.log(worldOwner)
     const newWorld = {
         //id, user_uuid, world_name, world_type, description

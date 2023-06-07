@@ -2,10 +2,13 @@ import logo from './logo.svg';
 import './App.css';
 import React, { useState, useMemo, useEffect}  from 'react';
 export default function Login() {
-    
     const [login, setLogin] = useState({
         email: '',
         password: ''
+    })
+
+    useEffect(() => {
+        document.title = "Login – Worldbuilding DB"
     })
 
     const handleChange = (name, value) => {
@@ -33,8 +36,9 @@ export default function Login() {
         const data = await response.json()
         if(response.status === 200 || response.status === 201) {
          //grab access token sent in response, add to local storage
-            localStorage.setItem("authToken", data)
-            window.location.href = '/'
+            localStorage.setItem("authToken", data.accessToken)
+            localStorage.setItem("user", data.user);
+            window.location.href = '/worlds'
         } else {
           alert("Your email or password was incorrect.")
         }
