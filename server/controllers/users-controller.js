@@ -47,7 +47,7 @@ const login = async (req, res) => {
     } else {
         const session = uuidv4();
         const secret = process.env.SECRET; //grab secret
-        const token = jwt.sign({id: matchingUser[0].id}, secret, {expiresIn: '1h'} ) //set session up
+        const token = jwt.sign({id: matchingUser[0].id}, secret, {expiresIn: "30 minutes"} ) //set session up
     
         return res.status(200).send({ //return accessToken
             user: matchingUser[0].id,

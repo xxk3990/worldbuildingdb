@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import React, { useState, useMemo, useEffect}  from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from './services/auth-service';
 
 export default function Worlds() {
   const navigate = useNavigate()
@@ -18,12 +19,19 @@ export default function Worlds() {
   const currentUserToken = localStorage.getItem("authToken")
   const currentUserID = localStorage.getItem("user")
   const fetchWorlds = () => {
-    const url = `http://localhost:3000/worlds?token=${currentUserToken}&id=${currentUserID}`;
+    const url = `http://localhost:3000/worlds?id=${currentUserID}`;
     fetch(url, {
         method: 'GET',
         headers: {"Authorization": `Bearer ${currentUserToken}`}
     }).then(response => {
-      return response.json();
+      if(response.status === 401) {
+        localStorage.removeItem('authToken')
+        localStorage.removeItem('user')
+        window.location.href = '/login'
+      } else {
+        return response.json();
+      }
+      
     }, []).then(data => {
         setWorlds(data)
     })
