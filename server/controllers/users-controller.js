@@ -42,9 +42,7 @@ const createAccount = (req, res ) => {
 
 const login = async (req, res) => {
     const matchingUser = await models.User.findAll({where: {'email': req.body.email, 'password': req.body.password}, raw: true})
-    if(matchingUser[0].email !== req.body.email || matchingUser[0].password !== req.body.password) {
-        return res.status(401).send({status: "Email or password does not match records."})
-    } else {
+    if(matchingUser.length !== 0) {
         const session = uuidv4();
         const secret = process.env.SECRET; //grab secret
         const token = jwt.sign({id: matchingUser[0].id}, secret, {expiresIn: "30 minutes"} ) //set session up
@@ -56,6 +54,8 @@ const login = async (req, res) => {
             session_id: session,
             accessToken: token
         })
+    } else {
+        return res.status(401).send({status: "Email or password does not match records."})
     }
 }
 module.exports = {getUsers, createAccount, login}

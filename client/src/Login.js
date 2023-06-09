@@ -39,8 +39,8 @@ export default function Login() {
             localStorage.setItem("authToken", data.accessToken)
             localStorage.setItem("user", data.user);
             window.location.href = '/worlds'
-        } else {
-          alert("Your email or password was incorrect.")
+        } else if(response.status === 401) {
+          alert(`${data.status}`)
         }
       } catch {
         alert("An error occurred")
