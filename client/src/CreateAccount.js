@@ -3,15 +3,18 @@ import './App.css';
 import React, { useState, useMemo, useEffect}  from 'react';
 
 export default function CreateAccount() {
-  const [newUser, setNewUser] = useState({
-    username: '',
-    email: '',
-    password: '',
-    firstname: '',
-    lastname: '',
-    dob: '',
-    role: ''
-  })
+    useEffect(() => {
+        document.title = "Create Account – Worldbuilding DB"
+    })
+    const [newUser, setNewUser] = useState({
+        username: '',
+        email: '',
+        password: '',
+        firstname: '',
+        lastname: '',
+        dob: '',
+        role: ''
+    })
 
   const handleChange = (name, value) => {
     setNewUser({...newUser, [name]:value})
@@ -48,6 +51,7 @@ export default function CreateAccount() {
           dob:'',
           role: ''
         })
+        window.location.href = '/login'; //redirect to login on successful account creation
       } else {
         alert("An error occurred.")
       }

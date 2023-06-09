@@ -2,6 +2,8 @@ const express = require('express');
 const router = require("./router");
 const {sequelize} = require('./models');
 const cors = require('cors');
+const { expressjwt: jwt } = require("express-jwt");
+const process = require('process')
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
@@ -11,6 +13,8 @@ app.use(express.json());
 app.use(cors({
     origin: `*`
 }))
+
+app.use(jwt({secret: process.env.SECRET, algorithms: ["HS256"]}).unless({ path: ["/login", "/addUser"]}))
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));

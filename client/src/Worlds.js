@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import React, { useState, useMemo, useEffect}  from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Worlds() {
   const [newWorld, setNewWorld] = useState({
@@ -9,36 +10,34 @@ export default function Worlds() {
     user: '',
     description: ''
   })
-  const [users, setUsers] = useState([]);
   const [worlds, setWorlds] = useState([])
-  const fetchUsers = () => {
-    const url = `http://localhost:3000/users`;
-    fetch(url, {
-        method: 'GET',
-    }).then(response => {
-      return response.json();
-    }, []).then(data => {
-       setUsers(data)
-    })
-  }
   useEffect(() => {
-   fetchUsers();
-  }, [])
-
+    document.title = "Worlds – Worldbuilding DB"
+  })
+  const currentUserToken = localStorage.getItem("authToken")
+  const currentUserID = localStorage.getItem("user")
   const fetchWorlds = () => {
-    const url = `http://localhost:3000/worlds`;
+    const url = `http://localhost:3000/worlds?id=${currentUserID}`;
     fetch(url, {
-        method: 'GET',
+      method: 'GET',
+      headers: {"Authorization": `Bearer ${currentUserToken}`}
     }).then(response => {
-      return response.json();
+      if(response.status === 401) {
+        localStorage.removeItem('authToken')
+        localStorage.removeItem('user')
+        window.location.href = '/login'
+      } else {
+        return response.json();
+      }
+      
     }, []).then(data => {
       setWorlds(data)
     })
   }
   useEffect(() => {
     fetchWorlds();
-  }, [])
-
+  })
+  
   const handleChange = (name, value) => {
     setNewWorld({...newWorld, [name]:value})
   }
@@ -48,13 +47,16 @@ export default function Worlds() {
     const requestBody = {
       world_name: newWorld.worldName,
       world_type: newWorld.worldType,
-      user: newWorld.user,
+      user: currentUserID,
       description: newWorld.description
     }
     console.log('Params:', requestBody)
     const requestParams = {
       method: 'POST',
-      headers: {"Content-Type": 'application/json'},
+      headers: {
+        "Content-Type" : 'application/json',
+        "Authorization" : `Bearer ${currentUserToken}`
+      }, 
       body: JSON.stringify(requestBody)
     }
     try {
@@ -102,20 +104,19 @@ export default function Worlds() {
                 <option value="Fantasy">Fantasy</option>
               </select>
             </span>
-            <span className='world-form-question'id="user">
-              <select value={newWorld.user} onChange={e => handleChange(e.target.name, e.target.value)} name='user' className='user-input'>
-              <option>Select User</option>
-                {users.map(u => {
-                  return <option value={u.username}>{u.username}</option>
-                })}
-              </select>
-            </span>
             <span className='world-form-question'id="first-name">Description: <textarea name='description' className='user-input'value={newWorld.description} onChange={e => handleChange(e.target.name, e.target.value)}></textarea></span>
             <button type='button' onClick={postWorlds}>Submit</button>
         </section>
       </div>
     );
   }
+
+ 
+  
+  
+ 
+
+  
 
 }
 
