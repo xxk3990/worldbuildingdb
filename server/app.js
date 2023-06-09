@@ -14,7 +14,7 @@ app.use(cors({
     origin: `*`
 }))
 
-app.use(jwt({secret: process.env.SECRET, algorithms: ["HS256"]}).unless({ path: ["/login"] }))
+app.use(jwt({secret: process.env.SECRET, algorithms: ["HS256"]}).unless({ path: ["/login", "/addUser"]}))
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
