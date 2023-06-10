@@ -1,0 +1,16 @@
+.nav-loggedin {
+   position: fixed;
+   z-index: 1;
+   top: 0;
+   left: 0;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
+
+.nav-links {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

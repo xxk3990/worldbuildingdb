@@ -4,7 +4,7 @@ import React, { useState, useMemo, useEffect}  from 'react';
 
 export default function CreateAccount() {
     useEffect(() => {
-        document.title = "Create Account – Worldbuilding DB"
+      document.title = "Create Account – Worldbuilding DB"
     })
     const [newUser, setNewUser] = useState({
         username: '',

@@ -1,0 +1,10 @@
+.data-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr)
+}
+
+.add-world {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

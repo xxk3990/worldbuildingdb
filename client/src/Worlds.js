@@ -1,9 +1,10 @@
 import logo from './logo.svg';
-import './App.css';
+import './styles/worlds.css'
 import React, { useState, useMemo, useEffect}  from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function Worlds() {
+  const navigate = useNavigate()
   const [newWorld, setNewWorld] = useState({
     worldName: '',
     worldType: '',
@@ -25,7 +26,7 @@ export default function Worlds() {
       if(response.status === 401) {
         localStorage.removeItem('authToken')
         localStorage.removeItem('user')
-        window.location.href = '/login'
+        navigate('/login', {replace: true})
       } else {
         return response.json();
       }
