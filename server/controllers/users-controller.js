@@ -36,8 +36,18 @@ const createAccount = (req, res ) => {
         // created_at: now,
         // updated_at: now
     }
-    res.status(201).send({status: 'success!'})
-    return models.User.create(newUser);
+    models.User.create(newUser);
+    const session = uuidv4();
+    const secret = process.env.SECRET; //grab secret
+    const token = jwt.sign({id: newUser.id}, secret, {expiresIn: "30 minutes"} ) //set session up
+    return res.status(200).send({ //return accessToken
+        newUser,
+        user: newUser.id,
+        email: newUser.email,
+        user_role: newUser.user_role,
+        session_id: session,
+        accessToken: token
+    })
 }
 
 const login = async (req, res) => {

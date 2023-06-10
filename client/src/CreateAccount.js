@@ -51,7 +51,9 @@ export default function CreateAccount() {
           dob:'',
           role: ''
         })
-        window.location.href = '/login'; //redirect to login on successful account creation
+        localStorage.setItem("authToken", data.accessToken)
+        localStorage.setItem("user", data.user)
+        window.location.href = '/worlds'; //redirect to login on successful account creation
       } else {
         alert("An error occurred.")
       }
