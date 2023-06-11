@@ -89,7 +89,7 @@ export default function Worlds() {
   } else {
     return (
       <div className="Worlds">
-        <section className = "data-grid">
+        <section className = "worlds-grid">
             {worlds.map(w => {
               return <WorldCard w={w}/>
             })}

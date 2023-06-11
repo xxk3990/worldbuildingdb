@@ -8,7 +8,7 @@ export default function Profile() {
     const [userProfile, setUserProfile] = useState([]);
     const navigate = useNavigate()
     useEffect(() => {
-       
+       document.title = "Profile – Worldbuilding DB"
     })
     const currentUserToken = localStorage.getItem("authToken")
     const currentUserID = localStorage.getItem("user")
@@ -33,34 +33,15 @@ export default function Profile() {
     useEffect(() => {
         fetchProfile()
     }, [])
-    if(userProfile.worlds_created === undefined) {
-        return (
-            <section className="profile-container">
-                <h4>{userProfile.first_name},{userProfile.last_name}</h4>
-                <h4>{userProfile.username}</h4>
-                <h4>{userProfile.email}</h4>
-                <p>Worlds Created: None Yet</p>
+    return (
+        <div className='Profile'>
+            <section className='profile-container'>
+                <h1>Your Profile</h1>
+                    
+                <h4>Name: {userProfile.first_name} {userProfile.last_name}</h4>
+                <h4>Username: {userProfile.username}</h4>
+                <h4>Email: {userProfile.email}</h4>
             </section>
-        )
-    } else {
-        return (
-            <div className='Profile'>
-                <section className='profile-container'>
-                    <h1>Your Profile</h1>
-                        
-                    <h4>{userProfile.first_name},{userProfile.last_name}</h4>
-                    <h4>{userProfile.username}</h4>
-                    <h4>{userProfile.email}</h4>
-                    <ul className='user-worlds'>
-                        {userProfile.worlds_created.map(world => {
-                            return <li key={world.id}>{world.world_name}, {world.world_type}</li>
-                        })}
-                    </ul>
-                </section>
-            </div>
-        ) 
-    } 
-    
-        
-   
+        </div>
+    )
 }
