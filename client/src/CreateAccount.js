@@ -4,7 +4,7 @@ import React, { useState, useMemo, useEffect}  from 'react';
 
 export default function CreateAccount() {
     useEffect(() => {
-        document.title = "Create Account – Worldbuilding DB"
+      document.title = "Create Account – Worldbuilding DB"
     })
     const [newUser, setNewUser] = useState({
         username: '',
@@ -51,7 +51,10 @@ export default function CreateAccount() {
           dob:'',
           role: ''
         })
-        window.location.href = '/login'; //redirect to login on successful account creation
+        localStorage.setItem("authToken", data.accessToken)
+        localStorage.setItem("user", data.user)
+        localStorage.setItem("userRole", data.user_role)
+        window.location.href = '/worlds'; //redirect to worlds on successful account creation
       } else {
         alert("An error occurred.")
       }

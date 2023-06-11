@@ -1,5 +1,5 @@
 import { createContext, useContext, useMemo, useState } from "react";
-import {Navigate, useNavigate } from "react-router-dom";
+import {Navigate, useNavigate, useOutlet, Link } from "react-router-dom";
 const AuthContext = createContext();
 
 export const useLocalStorage = (keyName) => {
@@ -48,10 +48,17 @@ export const useAuth = () => {
 
 export const ProtectedRoute = ({ children }) => {
     const { user } = useAuth();
-    console.log(user)
     if (!user) {
       // user is not authenticated
-      return <Navigate to="/" />;
+      return <Navigate to="/login" />;
     }
     return children;
 };
+
+export const AdminRoute = ({children}) => {
+  const role = useLocalStorage("userRole")
+  if(role[0] === "User") {
+    return <Navigate to='/worlds'/>
+  }
+  return children;
+}
