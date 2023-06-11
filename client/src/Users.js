@@ -5,9 +5,11 @@ import React, { useState, useMemo, useEffect}  from 'react';
 export default function Users() {
   const [users, setUsers] = useState([]);
   const fetchUsers = () => {
+    const currentUserToken = localStorage.getItem("authToken")
     const url = `http://localhost:3000/users`;
     fetch(url, {
         method: 'GET',
+        headers: {"Authorization": `Bearer ${currentUserToken}`}
     }).then(response => {
       return response.json();
     }, []).then(data => {

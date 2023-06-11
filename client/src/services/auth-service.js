@@ -1,6 +1,5 @@
 import { createContext, useContext, useMemo, useState } from "react";
 import {Navigate, useNavigate, useOutlet, Link } from "react-router-dom";
-import Navbar from "../Navbar";
 const AuthContext = createContext();
 
 export const useLocalStorage = (keyName) => {
@@ -55,3 +54,11 @@ export const ProtectedRoute = ({ children }) => {
     }
     return children;
 };
+
+export const AdminRoute = ({children}) => {
+  const role = useLocalStorage("userRole")
+  if(role[0] === "User") {
+    return <Navigate to='/worlds'/>
+  }
+  return children;
+}

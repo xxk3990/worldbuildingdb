@@ -40,6 +40,7 @@ export default function Login() {
        //grab access token sent in response, add to local storage
           localStorage.setItem("authToken", data.accessToken)
           localStorage.setItem("user", data.user);
+          localStorage.setItem("userRole", data.user_role)
           window.location.href = '/worlds'
       } else if(response.status === 401) {
         alert(`${data.status}`)
