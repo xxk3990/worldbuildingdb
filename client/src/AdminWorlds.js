@@ -6,7 +6,7 @@ import "./styles/admin-worlds.css"
 export default function AdminWorlds() {
     return (
         <div className='AdminWorlds'>
-            <h4>Add Admin World Stiff</h4>
+            <h4>Add Admin World Stuff</h4>
         </div>
     )
 }

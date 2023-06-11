@@ -10,7 +10,7 @@ export default function Login() {
   })
 
   useEffect(() => {
-      document.title = "Login – Worldbuilding DB"
+      
   })
 
   const handleChange = (name, value) => {

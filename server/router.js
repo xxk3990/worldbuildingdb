@@ -7,6 +7,7 @@ const router = (app) => {
     app.post('/addWorld', worlds.addWorld)
     app.get('/worlds', worlds.getWorlds)
     app.post('/login', users.login)
+    app.get('/profile', users.userProfile)
 }
 
 module.exports = router;

@@ -37,7 +37,7 @@ export default function Worlds() {
   }
   useEffect(() => {
     fetchWorlds();
-  })
+  }, [])
   
   const handleChange = (name, value) => {
     setNewWorld({...newWorld, [name]:value})
