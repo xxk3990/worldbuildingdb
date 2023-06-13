@@ -26,6 +26,7 @@ export default function Worlds() {
       if(response.status === 401) {
         localStorage.removeItem('authToken')
         localStorage.removeItem('user')
+        localStorage.removeItem("userRole");
         navigate('/login', {replace: true})
       } else {
         return response.json();

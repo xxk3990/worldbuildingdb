@@ -62,3 +62,13 @@ export const AdminRoute = ({children}) => {
   }
   return children;
 }
+
+export const CheckIfAuthenticated = () => {
+  const user = useLocalStorage("authToken")
+  if(!user[0]) {
+    return false;
+  } else {
+    return true;
+  }
+  
+}

@@ -10,8 +10,8 @@ export default function Users() {
     const currentUserToken = localStorage.getItem("authToken")
     const url = `http://localhost:3000/users`;
     fetch(url, {
-        method: 'GET',
-        headers: {"Authorization": `Bearer ${currentUserToken}`}
+      method: 'GET',
+      headers: {"Authorization": `Bearer ${currentUserToken}`}
     }).then(response => {
       if(response.status === 401) {
         navigate('/login', {replace: true})
