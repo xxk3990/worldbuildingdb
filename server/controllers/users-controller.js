@@ -7,32 +7,19 @@ const {
 const models = require('../models')
 const jwt = require('jsonwebtoken')
 const process = require("process")
+const bcrypt = require("bcrypt");
 
-const getUsers = async (req, res) => {
-    const users = await models.User.findAll({
-        include: [{
-            model: models.World,
-            attributes: ["world_name", "world_type"],
-            as: "worlds_created"
-        }],
-    })
-    //include find
-    if (users !== undefined) {
-        return res.json(users);
-    } else {
-        return res.json({
-            "message": "No users added yet."
-        })
-    }
 
-}
-const createAccount = (req, res) => {
-    console.log('Body:', req.body);
+const saltRounds = 10;
+
+const createAccount = async (req, res) => {
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hash = await bcrypt.hash(req.body.password.toString(), salt)
     const newUser = {
         id: uuidv4(),
         username: req.body.username,
         email: req.body.email,
-        password: req.body.password,
+        password: hash,
         first_name: req.body.first_name,
         last_name: req.body.last_name,
         dob: req.body.dob,
@@ -62,29 +49,36 @@ const login = async (req, res) => {
     const matchingUser = await models.User.findAll({
         where: {
             'email': req.body.email,
-            'password': req.body.password
         },
         raw: true
     })
     if (matchingUser.length !== 0) {
-        const session = uuidv4();
-        const secret = process.env.SECRET; //grab secret
-        const token = jwt.sign({
-            id: matchingUser[0].id
-        }, secret, {
-            expiresIn: "30 minutes"
-        }) //set session up
-
-        return res.status(200).send({ //return accessToken
-            user: matchingUser[0].id,
-            email: matchingUser[0].email,
-            user_role: matchingUser[0].user_role,
-            session_id: session,
-            accessToken: token
-        })
+        const passwordExists = await bcrypt.compare(req.body.password, matchingUser[0].password)
+        if(passwordExists) {
+            const session = uuidv4();
+            const secret = process.env.SECRET; //grab secret
+            const token = jwt.sign({
+                id: matchingUser[0].id
+            }, secret, {
+                expiresIn: "30 minutes"
+            }) //set session up
+    
+            return res.status(200).send({ //return accessToken
+                user: matchingUser[0].id,
+                email: matchingUser[0].email,
+                user_role: matchingUser[0].user_role,
+                session_id: session,
+                accessToken: token
+            })
+        } else {
+            return res.status(401).send({
+                status: "Username or Password is incorrect"
+            })
+        }
+       
     } else {
         return res.status(401).send({
-            status: "Email or password does not match records."
+            status: "User does not exist."
         })
     }
 }
@@ -103,7 +97,6 @@ const userProfile = async (req, res) => {
         }],
     })
     if (matchingUser.length !== 0) {
-        console.log(matchingUser)
         return res.json(matchingUser)
     } else {
         return res.status(401).send({
@@ -113,7 +106,6 @@ const userProfile = async (req, res) => {
 }
 
 module.exports = {
-    getUsers,
     createAccount,
     login,
     userProfile

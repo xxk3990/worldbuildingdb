@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './styles/worlds.css'
 import React, { useState, useMemo, useEffect}  from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { Snackbar } from '@mui/material';
 export default function Worlds() {
   const navigate = useNavigate()
   const [newWorld, setNewWorld] = useState({
@@ -11,23 +11,25 @@ export default function Worlds() {
     user: '',
     description: ''
   })
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   const [worlds, setWorlds] = useState([])
   useEffect(() => {
     document.title = "Worlds – Worldbuilding DB"
   })
   const currentUserToken = localStorage.getItem("authToken")
   const currentUserID = localStorage.getItem("user")
-  const fetchWorlds = () => {
-    const url = `http://localhost:3000/worlds?id=${currentUserID}`;
-    fetch(url, {
+
+  const fetchWorlds = async () => { //get worlds method
+    const url = `http://localhost:3000/worlds?id=${currentUserID}`; //get data unique to the current user id
+    await fetch(url, {
       method: 'GET',
-      headers: {"Authorization": `Bearer ${currentUserToken}`}
+      headers: {"Authorization": `Bearer ${currentUserToken}`} //pass in token as header
     }).then(response => {
-      if(response.status === 401) {
-        localStorage.removeItem('authToken')
-        localStorage.removeItem('user')
-        localStorage.removeItem("userRole");
-        navigate('/login', {replace: true})
+      if(response.status === 401) { //if a call is attempted without a valid token
+        localStorage.removeItem('authToken') //remove from LS
+        localStorage.removeItem('user')//remove from LS
+        localStorage.removeItem("userRole"); //remove from LS
+        navigate('/login', {replace: true}) //Redirect to login
       } else {
         return response.json();
       }
@@ -72,6 +74,11 @@ export default function Worlds() {
           user: '',
           description:''
         })
+        setOpenSnackbar(true);
+        setTimeout(() => {
+          setOpenSnackbar(false);
+          window.location.reload()
+        }, 1500)
       } else {
         alert("An error occurred.")
       }
@@ -90,6 +97,7 @@ export default function Worlds() {
   } else {
     return (
       <div className="Worlds">
+        <Snackbar open={openSnackbar} autoHideDuration={1500} message="World Created Successfully! Reloading..." anchorOrigin={{horizontal: "center", vertical:"top"}}/>
         <section className = "worlds-grid">
             {worlds.map(w => {
               return <WorldCard w={w}/>

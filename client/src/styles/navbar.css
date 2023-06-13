@@ -36,6 +36,10 @@ a {
     text-decoration: none;
 }
 
+a:focus {
+    text-decoration: underline;
+}
+
 .nav-links li:hover {
     transform: scale(1.1, 1.1);
 }
