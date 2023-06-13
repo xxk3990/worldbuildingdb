@@ -23,6 +23,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.13.5",
     "@types/sequelize": "^4.28.15",
+    "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "create-react-app": "^5.0.1",
     "dotenv": "^16.0.3",

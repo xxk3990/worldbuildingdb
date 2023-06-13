@@ -21,7 +21,7 @@ export default function Login() {
   }
 
   const navigateCreateAccount = () => {
-    window.location.href = '/CreateAccount'
+    window.location.href = '/createAccount'
   }
 
   const navigateToWorlds = () => {
@@ -30,11 +30,6 @@ export default function Login() {
       window.location.href = '/worlds'
     }, 2000)
   }
-
-  //const checkLogin = localStorage.getItem("authToken")
-  // if(checkLogin !== null) {
-  //   window.location.href = '/worlds';
-  // }
   
   const submitLogin = async () => {
     const postURL = `http://localhost:3000/login`
@@ -42,7 +37,6 @@ export default function Login() {
       email: login.email,
       password: login.password,
     }
-    console.log('Params:', requestBody)
     const requestParams = {
       method: 'POST',
       headers: {"Content-Type": 'application/json'},
@@ -73,8 +67,8 @@ export default function Login() {
      <Snackbar open={openSnackbar} autoHideDuration={2000} message="Login Successful!" anchorOrigin={{horizontal: "center", vertical:"top"}}/>
       <section className='user-login'>
         <h4>Login</h4>
-          <span className='login-form-question' id="email">Email: <input type='email' name='email' className='user-input'value={login.email} onChange={e => handleChange(e.target.name, e.target.value)}/></span>
-          <span className='login-form-question'id="password">Password: <input type='password' name='password' className='name-input'value={login.password} onChange={e => handleChange(e.target.name, e.target.value)}/></span>
+          <span className='login-form-question' id="email">Email: <input type='email' name='email' className='email-input'value={login.email} onChange={e => handleChange(e.target.name, e.target.value)}/></span>
+          <span className='login-form-question'id="password">Password: <input type='password' name='password' className='password-input'value={login.password} onChange={e => handleChange(e.target.name, e.target.value)}/></span>
           <button type='button' onClick={submitLogin}>Submit</button>
       </section>
       <span>New User? Create Account<button type='button' onClick={navigateCreateAccount}>Create Account</button></span>

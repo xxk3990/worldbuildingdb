@@ -13,16 +13,16 @@ export default function Profile() {
     const currentUserToken = localStorage.getItem("authToken")
     const currentUserID = localStorage.getItem("user")
     const fetchProfile = () => {
-        const url = `http://localhost:3000/profile?id=${currentUserID}`;
+        const url = `http://localhost:3000/profile?id=${currentUserID}`; //get data unique to the current user id
         fetch(url, {
             method: 'GET',
-            headers: {"Authorization": `Bearer ${currentUserToken}`}
+            headers: {"Authorization": `Bearer ${currentUserToken}`} //pass in token as header
         }).then(response => {
-            if(response.status === 401) {
-              localStorage.removeItem('authToken')
-              localStorage.removeItem('user')
-              localStorage.removeItem("userRole");
-              navigate('/login', {replace: true})
+            if(response.status === 401) { //if a call is attempted without a valid token
+                localStorage.removeItem('authToken') //remove from LS
+                localStorage.removeItem('user')//remove from LS
+                localStorage.removeItem("userRole"); //remove from LS
+                navigate('/login', {replace: true}) //Redirect to login
             } else {
               return response.json();
             }
