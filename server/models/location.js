@@ -11,13 +11,16 @@ const locationModel = (sequelize, DataTypes) => {
             type: DataTypes.UUID,
             allowNull: false
         },
+        location_name: {
+            type: DataTypes.STRING,
+        },
         location_type: {
             type: DataTypes.STRING
         },
         inhabitants: {
             type: DataTypes.STRING,
         },
-        location_description: {
+        description: {
             type: DataTypes.STRING
         },
         sequelize,
