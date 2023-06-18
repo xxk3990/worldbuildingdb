@@ -10,6 +10,7 @@ const config = require(`${__dirname}/../config/config.js`)[env];
 const db = {};
 const { userModel } = require('./user');
 const {worldModel} = require('./world');
+const {locationModel} = require('./location')
 const bcrypt = require("bcrypt")
 
 const sequelize = new Sequelize(config.database, config.username, config.password, {
@@ -19,7 +20,8 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
 
 const models = {
   User: userModel(sequelize, Sequelize.DataTypes),
-  World: worldModel(sequelize, Sequelize.DataTypes)
+  World: worldModel(sequelize, Sequelize.DataTypes),
+  Location: locationModel(sequelize, Sequelize.DataTypes)
 }
 
 fs
@@ -34,7 +36,6 @@ fs
   })
   .forEach(() => {
     for(const m of Object.values(models)) {
-      console.log(m)
       db[m.name] = m;
     }
     // .forEach(model => {
@@ -51,6 +52,16 @@ fs
   models.World.belongsTo(models.User, {
     as: 'world_owner',
     foreignKey:'user_uuid'
+  })
+
+  models.World.hasMany(models.Location, {
+    as: "locations_in_world",
+    foreignKey: 'world_uuid'
+  })
+
+  models.Location.belongsTo(models.World, {
+    as: "exists_in",
+    foreignKey: "world_uuid"
   })
 
  

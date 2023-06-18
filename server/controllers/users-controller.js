@@ -33,7 +33,7 @@ const createAccount = async (req, res) => {
     const token = jwt.sign({
         id: newUser.id
     }, secret, {
-        expiresIn: "30 minutes"
+        expiresIn: "30 minutes",
     }) //set session up
     return res.status(200).send({ //return accessToken
         newUser,
@@ -46,7 +46,8 @@ const createAccount = async (req, res) => {
 }
 
 const login = async (req, res) => {
-    const matchingUser = await models.User.findAll({
+    //Try switching to .findOne(), there should only be one anyway
+    const matchingUser = await models.User.findAll({ 
         where: {
             'email': req.body.email,
         },
@@ -72,13 +73,13 @@ const login = async (req, res) => {
             })
         } else {
             return res.status(401).send({
-                status: "Username or Password is incorrect"
+                status: "Password is incorrect"
             })
         }
        
     } else {
         return res.status(401).send({
-            status: "User does not exist."
+            status: "No user with email address provided exists."
         })
     }
 }
@@ -90,7 +91,7 @@ const userProfile = async (req, res) => {
         },
         raw: true,
     }, {
-        include: [{
+        include: [{//this is not working, profile page on front-end thinks worlds_created = undefined
             model: models.World,
             attributes: ["world_name", "world_type"],
             as: "worlds_created"

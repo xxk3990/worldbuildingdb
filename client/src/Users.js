@@ -14,6 +14,7 @@ export default function Users() {
       headers: {"Authorization": `Bearer ${currentUserToken}`}
     }).then(response => {
       if(response.status === 401) {
+        localStorage.clear() //remove all items in localStorage
         navigate('/login', {replace: true})
       }
       return response.json();
