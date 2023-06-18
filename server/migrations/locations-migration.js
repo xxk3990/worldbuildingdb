@@ -36,6 +36,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('worlds');
+    await queryInterface.dropTable('locations');
   }
 };

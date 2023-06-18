@@ -26,9 +26,7 @@ export default function Worlds() {
       headers: {"Authorization": `Bearer ${currentUserToken}`} //pass in token as header
     }).then(response => {
       if(response.status === 401) { //if a call is attempted without a valid token
-        localStorage.removeItem('authToken') //remove from LS
-        localStorage.removeItem('user')//remove from LS
-        localStorage.removeItem("userRole"); //remove from LS
+        localStorage.clear() //remove all items in localStorage
         navigate('/login', {replace: true}) //Redirect to login
       } else {
         return response.json();
@@ -91,7 +89,21 @@ export default function Worlds() {
   if(worlds === undefined) {
     return (
       <div className="Worlds">
-        No world found.
+        <h4>No world found.</h4>
+        <section className='add-world'>
+          <h4>Add a world! Once your main worlds have been set, you can then save locations and/or characters in the world. </h4>
+            <span className='world-form-question' id="worldname">World Name: <input type='text' name='worldName' className='user-input' value={newWorld.worldName} onChange={e => handleChange(e.target.name, e.target.value)}/></span>
+            <span className='world-form-question' id="worldtype">
+              World Type: 
+              <select value={newWorld.worldType} name='worldType' className='user-input' onChange={ e => handleChange(e.target.name, e.target.value)}>
+                <option>Select World Type</option>
+                <option value="Sci-Fi">Sci-Fi</option>
+                <option value="Fantasy">Fantasy</option>
+              </select>
+            </span>
+            <span className='world-form-question'id="first-name">Description: <textarea name='description' className='user-input'value={newWorld.description} onChange={e => handleChange(e.target.name, e.target.value)}></textarea></span>
+            <button type='button' onClick={postWorlds}>Submit</button>
+        </section>
       </div>
     )
   } else {
@@ -130,13 +142,27 @@ export default function Worlds() {
 
 }
 
+
+
 const WorldCard = (props) => {
   const w = props.w;
+  const navigateToLocations = () => {
+    //first remove any previously set world/world name so user can have multiple worlds
+    localStorage.removeItem("world")
+    localStorage.removeItem("worldName");
+
+    //then add current
+    localStorage.setItem("world", w.id)
+    localStorage.setItem("worldName", w.world_name);
+
+    window.location.href = '/locations'
+  }
   return(
     <section className="world-info">
       <h3 id="worldname">{w.world_name}</h3>
       <p>{w.world_type}</p>
       <p>{w.description}</p>
+      <button type="button" className='toLocations' onClick={navigateToLocations}>Locations</button>
     </section>
   )
 }

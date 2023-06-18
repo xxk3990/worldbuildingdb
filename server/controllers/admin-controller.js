@@ -11,7 +11,8 @@ const getAllUsers = async (req, res) => {
         }],
     })
     //include find
-    if (users !== undefined) {
+    //test out doing if(users.length !== 0) instead, could be a stronger check
+    if (users !== undefined) { 
         return res.json(users);
     } else {
         return res.json({

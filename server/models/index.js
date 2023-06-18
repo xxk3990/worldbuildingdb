@@ -36,7 +36,6 @@ fs
   })
   .forEach(() => {
     for(const m of Object.values(models)) {
-      console.log(m)
       db[m.name] = m;
     }
     // .forEach(model => {

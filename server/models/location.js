@@ -23,6 +23,7 @@ const locationModel = (sequelize, DataTypes) => {
         description: {
             type: DataTypes.STRING
         },
+    }, {
         sequelize,
         modelName: 'Location',
         tableName: 'locations',

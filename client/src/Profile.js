@@ -19,9 +19,7 @@ export default function Profile() {
             headers: {"Authorization": `Bearer ${currentUserToken}`} //pass in token as header
         }).then(response => {
             if(response.status === 401) { //if a call is attempted without a valid token
-                localStorage.removeItem('authToken') //remove from LS
-                localStorage.removeItem('user')//remove from LS
-                localStorage.removeItem("userRole"); //remove from LS
+                localStorage.clear() //remove all items in localStorage
                 navigate('/login', {replace: true}) //Redirect to login
             } else {
               return response.json();

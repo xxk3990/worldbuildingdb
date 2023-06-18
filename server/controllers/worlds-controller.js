@@ -11,6 +11,7 @@ const getWorlds = async (req, res) => {
             as: "world_owner"
         }]
     })
+    //test out doing if(users.length !== 0) instead, could be a stronger check
     if(worlds !== undefined) {
         return res.json(worlds)
     } else {

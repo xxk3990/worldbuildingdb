@@ -11,6 +11,7 @@ const router = (app) => {
     app.post('/login', users.login)
     app.get('/profile', users.userProfile)
     app.get('/locations', locs.getAllLocations)
+    app.post('/addLocation', locs.addLocation)
 }
 
 module.exports = router;
