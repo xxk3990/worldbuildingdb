@@ -2,25 +2,14 @@ import logo from './logo.svg';
 import './styles/users.css';
 import React, { useState, useMemo, useEffect}  from 'react';
 import { useNavigate } from 'react-router-dom';
+import { handleGet } from './services/requests-service';
 
 export default function Users() {
   const [users, setUsers] = useState([]);
-  const navigate = useNavigate()
   const fetchUsers = () => {
     const currentUserToken = localStorage.getItem("authToken")
     const url = `http://localhost:3000/users`;
-    fetch(url, {
-      method: 'GET',
-      headers: {"Authorization": `Bearer ${currentUserToken}`}
-    }).then(response => {
-      if(response.status === 401) {
-        localStorage.clear() //remove all items in localStorage
-        navigate('/login', {replace: true})
-      }
-      return response.json();
-    }, []).then(data => {
-       setUsers(data)
-    })
+    handleGet(url, currentUserToken, setUsers)
   }
   useEffect(() => {
    document.title = "All users – Worldbuilding DB"

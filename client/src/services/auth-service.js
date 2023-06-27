@@ -25,50 +25,6 @@ export const useLocalStorage = (keyName) => {
   return [storedValue, setValue];
 };
 
-export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useLocalStorage("authToken")
-    const navigate = useNavigate();
-    // call this function when you want to authenticate the user
-    const login = async (data) => {
-        setUser(data);
-        navigate("/worlds");
-    };
-
-  // call this function to sign out logged in user
-    const logout = () => {
-        setUser(null);
-        navigate("/login", { replace: true });
-    };
-    return <AuthContext.Provider value={{user, login, logout}}>{children}</AuthContext.Provider>;
-};
-
 export const useAuth = () => {
   return useContext(AuthContext);
 };
-
-export const ProtectedRoute = ({ children }) => {
-    const { user } = useAuth();
-    if (!user) {
-      // user is not authenticated
-      return <Navigate to="/login" />;
-    }
-    return children;
-};
-
-export const AdminRoute = ({children}) => {
-  const role = useLocalStorage("userRole")
-  if(role[0] === "User") {
-    return <Navigate to='/worlds'/>
-  }
-  return children;
-}
-
-export const CheckIfAuthenticated = () => {
-  const user = useLocalStorage("authToken")
-  if(!user[0]) {
-    return false;
-  } else {
-    return true;
-  }
-  
-}

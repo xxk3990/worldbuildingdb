@@ -3,8 +3,8 @@ import './styles/worlds.css'
 import React, { useState, useMemo, useEffect}  from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Snackbar } from '@mui/material';
+import { handleGet, handlePost } from './services/requests-service';
 export default function Worlds() {
-  const navigate = useNavigate()
   const [newWorld, setNewWorld] = useState({
     worldName: '',
     worldType: '',
@@ -13,38 +13,23 @@ export default function Worlds() {
   })
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [worlds, setWorlds] = useState([])
-  useEffect(() => {
-    document.title = "Worlds – Worldbuilding DB"
-  })
   const currentUserToken = localStorage.getItem("authToken")
   const currentUserID = localStorage.getItem("user")
-
-  const fetchWorlds = async () => { //get worlds method
+  const getWorlds = () => {
     const url = `http://localhost:3000/worlds?id=${currentUserID}`; //get data unique to the current user id
-    await fetch(url, {
-      method: 'GET',
-      headers: {"Authorization": `Bearer ${currentUserToken}`} //pass in token as header
-    }).then(response => {
-      if(response.status === 401) { //if a call is attempted without a valid token
-        localStorage.clear() //remove all items in localStorage
-        navigate('/login', {replace: true}) //Redirect to login
-      } else {
-        return response.json();
-      }
-      
-    }, []).then(data => {
-      setWorlds(data)
-    })
+    handleGet(url, currentUserToken, setWorlds)
   }
+  
   useEffect(() => {
-    fetchWorlds();
+    document.title = "Worlds – Worldbuilding DB"
+    getWorlds()
   }, [])
   
   const handleChange = (name, value) => {
     setNewWorld({...newWorld, [name]:value})
   }
   
-  const postWorlds = async () => {
+  const postWorld = async () => {
     const postURL = `http://localhost:3000/addWorld`
     const requestBody = {
       world_name: newWorld.worldName,
@@ -53,16 +38,8 @@ export default function Worlds() {
       description: newWorld.description
     }
     console.log('Params:', requestBody)
-    const requestParams = {
-      method: 'POST',
-      headers: {
-        "Content-Type" : 'application/json',
-        "Authorization" : `Bearer ${currentUserToken}`
-      }, 
-      body: JSON.stringify(requestBody)
-    }
     try {
-      const response = await fetch(postURL, requestParams)
+      const response = await handlePost(postURL, currentUserToken, requestBody)
       const data = await response.json()
       if(response.status === 200 || response.status === 201) {
         setWorlds([...worlds, data])
@@ -72,18 +49,17 @@ export default function Worlds() {
           user: '',
           description:''
         })
+        getWorlds();
         setOpenSnackbar(true);
         setTimeout(() => {
           setOpenSnackbar(false);
-          window.location.reload()
         }, 1500)
       } else {
         alert("An error occurred.")
       }
     } catch {
-      alert("An error occurred.")
+      alert("An error occurred while saving this world.")
     }
-  
   }
 
   if(worlds === undefined) {
@@ -102,14 +78,14 @@ export default function Worlds() {
               </select>
             </span>
             <span className='world-form-question'id="first-name">Description: <textarea name='description' className='user-input'value={newWorld.description} onChange={e => handleChange(e.target.name, e.target.value)}></textarea></span>
-            <button type='button' onClick={postWorlds}>Submit</button>
+            <button type='button' onClick={postWorld}>Submit</button>
         </section>
       </div>
     )
   } else {
     return (
       <div className="Worlds">
-        <Snackbar open={openSnackbar} autoHideDuration={1500} message="World Created Successfully! Reloading..." anchorOrigin={{horizontal: "center", vertical:"top"}}/>
+        <Snackbar open={openSnackbar} autoHideDuration={1500} message="World Created Successfully!" anchorOrigin={{horizontal: "center", vertical:"top"}}/>
         <section className = "worlds-grid">
             {worlds.map(w => {
               return <WorldCard w={w}/>
@@ -127,7 +103,7 @@ export default function Worlds() {
               </select>
             </span>
             <span className='world-form-question'id="first-name">Description: <textarea name='description' className='user-input'value={newWorld.description} onChange={e => handleChange(e.target.name, e.target.value)}></textarea></span>
-            <button type='button' onClick={postWorlds}>Submit</button>
+            <button type='button' onClick={postWorld}>Submit</button>
         </section>
       </div>
     );
