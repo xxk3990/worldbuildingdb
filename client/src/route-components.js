@@ -1,12 +1,12 @@
-import {Navigate, useNavigate, useOutlet, Link } from "react-router-dom";
+import {Navigate} from "react-router-dom";
 
-import {useLocalStorage } from "../services/auth-service";
+import {useLocalStorage } from "./services/auth-service";
 
 export const ProtectedRoute = ({ children }) => {
     const user = useLocalStorage("authToken")
     if (!user[0]) {
       // user is not authenticated
-      return <Navigate to="/login" />;
+      return <Navigate to="/" />;
     }
     return children;
 };

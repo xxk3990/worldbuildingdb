@@ -5,7 +5,7 @@ import {Routes, Route, Outlet} from 'react-router-dom';
 import CreateAccount from './CreateAccount';
 import Worlds from './Worlds';
 import Login from './Login';
-import { AdminRoute, ProtectedRoute} from "./components/route-components";
+import { AdminRoute, ProtectedRoute} from "./route-components";
 import HomeLoggedOut from './Home-LoggedOut';
 import Navbar from './Navbar';
 import Profile from './Profile';

@@ -5,7 +5,7 @@ export const handleGet = async (url, token, setDataInComponent) => {
     }).then(response => {
         if(response.status === 401) {
             localStorage.clear();
-            window.location.href = "/login";
+            window.location.href = "/";
         } else {
             return response.json()
         }
