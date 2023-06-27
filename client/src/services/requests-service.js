@@ -1,4 +1,4 @@
-export const handleGet = async (url, token, setData) => {
+export const handleGet = async (url, token, setDataForComponent) => {
     await fetch(url, {
         method: 'GET',
         headers: {"Authorization": `Bearer ${token}`} //pass in token as header
@@ -9,8 +9,9 @@ export const handleGet = async (url, token, setData) => {
         } else {
             return response.json()
         }
-    }, []).then(data => {
-        return setData(data);
+    }, []).then(responseData => {
+        //The data for the component is the setXXX variable (example: setWorlds, setLocations)
+        return setDataForComponent(responseData); //set it equal to data from API
     })
 }
 
