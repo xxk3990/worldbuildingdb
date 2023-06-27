@@ -3,34 +3,21 @@ import './styles/profile.css';
 import React, { useState, useEffect }  from 'react';
 import "./styles/profile.css"
 import { useNavigate } from 'react-router-dom';
+import { handleGet } from './services/requests-service';
 
 export default function Profile() {
     const [userProfile, setUserProfile] = useState([]);
-    const navigate = useNavigate()
     useEffect(() => {
        document.title = "Profile – Worldbuilding DB"
     })
     const currentUserToken = localStorage.getItem("authToken")
     const currentUserID = localStorage.getItem("user")
-    const fetchProfile = () => {
+    const getProfile = () => {
         const url = `http://localhost:3000/profile?id=${currentUserID}`; //get data unique to the current user id
-        fetch(url, {
-            method: 'GET',
-            headers: {"Authorization": `Bearer ${currentUserToken}`} //pass in token as header
-        }).then(response => {
-            if(response.status === 401) { //if a call is attempted without a valid token
-                localStorage.clear() //remove all items in localStorage
-                navigate('/login', {replace: true}) //Redirect to login
-            } else {
-              return response.json();
-            }
-            
-        }, []).then(data => {
-            setUserProfile(data)
-        })
+        handleGet(url, currentUserToken, setUserProfile)
     }
     useEffect(() => {
-        fetchProfile()
+        getProfile()
     }, [])
     return (
         <div className='Profile'>

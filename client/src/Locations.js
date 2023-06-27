@@ -3,6 +3,7 @@ import './styles/locations.css'
 import React, { useState, useMemo, useEffect}  from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Snackbar } from '@mui/material';
+import { handleGet, handlePost } from './services/requests-service';
 export default function Locations() {
   const navigate = useNavigate()
   const [newLocation, setNewLocation] = useState({
@@ -14,72 +15,48 @@ export default function Locations() {
   })
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [locations, setLocations] = useState([])
-  useEffect(() => {
-    document.title = "Locations – Worldbuilding DB"
-  })
   const currentUserToken = localStorage.getItem("authToken")
-  //const currentUserID = localStorage.getItem("user")
   const worldName = localStorage.getItem("worldName")
   const currentWorld = localStorage.getItem("world")
-  const fetchLocations = async () => { //get worlds method
+  const getLocations = () => { //get worlds method
     const url = `http://localhost:3000/locations?id=${currentWorld}`; //get data unique to the current world id
-    await fetch(url, {
-      method: 'GET',
-      headers: {"Authorization": `Bearer ${currentUserToken}`} //pass in token as header
-    }).then(response => {
-      if(response.status === 401) { //if a call is attempted without a valid token
-        localStorage.clear() //remove all items in localStorage
-        navigate('/login', {replace: true}) //Redirect to login
-      } else {
-        return response.json();
-      }
-      
-    }, []).then(data => {
-      setLocations(data)
-    })
+    handleGet(url, currentUserToken, setLocations)
   }
   useEffect(() => {
-    fetchLocations();
+    document.title = "Locations – Worldbuilding DB"
+    getLocations();
   }, [])
   
   const handleChange = (name, value) => {
     setNewLocation({...newLocation, [name]:value})
   }
   
-  const postLocations = async () => {
+  const postLocation = async () => {
     const postURL = `http://localhost:3000/addLocation`
     const requestBody = {
-        location_name: newLocation.locationName,
-        location_type: newLocation.locationType,
-        world: currentWorld,
-        inhabitants: newLocation.inhabitants,
-        description: newLocation.description
+      location_name: newLocation.locationName,
+      location_type: newLocation.locationType,
+      world: currentWorld,
+      inhabitants: newLocation.inhabitants,
+      description: newLocation.description
     }
     console.log('Params:', requestBody)
-    const requestParams = {
-      method: 'POST',
-      headers: {
-        "Content-Type" : 'application/json',
-        "Authorization" : `Bearer ${currentUserToken}`
-      }, 
-      body: JSON.stringify(requestBody)
-    }
     try {
-      const response = await fetch(postURL, requestParams)
+      const response = await handlePost(postURL, currentUserToken, requestBody)
       const data = await response.json()
       if(response.status === 200 || response.status === 201) {
         setLocations([...locations, data])
         setNewLocation({
-            locationName: '',
-            locationType: '',
-            world: '',
-            inhabitants:'',
-            description: ''
+          locationName: '',
+          locationType: '',
+          world: '',
+          inhabitants:'',
+          description: ''
         })
+        getLocations();
         setOpenSnackbar(true);
         setTimeout(() => {
           setOpenSnackbar(false);
-          window.location.reload()
         }, 1500)
       } else {
         alert("An error occurred.")
@@ -89,11 +66,10 @@ export default function Locations() {
     }
   
   }
-  console.log(locations);
-  if(locations === {message: 'No locations added yet.'}) {
+  if(locations === undefined) {
     return (
       <div className="Locations">
-        <Snackbar open={openSnackbar} autoHideDuration={1500} message="Location Added Successfully! Reloading..." anchorOrigin={{horizontal: "center", vertical:"top"}}/>
+        <Snackbar open={openSnackbar} autoHideDuration={1500} message="Location Added Successfully!" anchorOrigin={{horizontal: "center", vertical:"top"}}/>
         <h1 className='location-title'>Add locations to {worldName}</h1>
         <h4>No Locations found.</h4>
         <section className='add-location'>
@@ -111,7 +87,7 @@ export default function Locations() {
             </span>
             <span className='location-form-question'id="inhabitants">Inhabitants (if any): <textarea name='inhabitants' className='user-input'value={newLocation.inhabitants} onChange={e => handleChange(e.target.name, e.target.value)}></textarea></span>
             <span className='location-form-question'id="inhabitants">Description: <textarea name='description' className='user-input'value={newLocation.description} onChange={e => handleChange(e.target.name, e.target.value)}></textarea></span>
-            <button type='button' onClick={postLocations}>Submit</button>
+            <button type='button' onClick={postLocation}>Submit</button>
         </section>
       </div>
     )
@@ -140,7 +116,7 @@ export default function Locations() {
             </span>
             <span className='location-form-question'id="inhabitants">Inhabitants (if any): <textarea name='inhabitants' className='user-input'value={newLocation.inhabitants} onChange={e => handleChange(e.target.name, e.target.value)}></textarea></span>
             <span className='location-form-question'id="inhabitants">Description: <textarea name='description' className='user-input'value={newLocation.description} onChange={e => handleChange(e.target.name, e.target.value)}></textarea></span>
-            <button type='button' onClick={postLocations}>Submit</button>
+            <button type='button' onClick={postLocation}>Submit</button>
         </section>
       </div>
     );

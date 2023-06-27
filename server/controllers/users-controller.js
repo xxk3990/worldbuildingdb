@@ -46,34 +46,33 @@ const createAccount = async (req, res) => {
 }
 
 const login = async (req, res) => {
-    //Try switching to .findOne(), there should only be one anyway
-    const matchingUser = await models.User.findAll({ 
+    const matchingUser = await models.User.findOne({
         where: {
             'email': req.body.email,
         },
         raw: true
     })
     if (matchingUser.length !== 0) {
-        const passwordExists = await bcrypt.compare(req.body.password, matchingUser[0].password)
-        if(passwordExists) {
+        const passwordValid = await bcrypt.compare(req.body.password, matchingUser.password)
+        if(passwordValid) {
             const session = uuidv4();
             const secret = process.env.SECRET; //grab secret
             const token = jwt.sign({
-                id: matchingUser[0].id
+                id: matchingUser.id
             }, secret, {
                 expiresIn: "30 minutes"
             }) //set session up
     
             return res.status(200).send({ //return accessToken
-                user: matchingUser[0].id,
-                email: matchingUser[0].email,
-                user_role: matchingUser[0].user_role,
+                user: matchingUser.id,
+                email: matchingUser.email,
+                user_role: matchingUser.user_role,
                 session_id: session,
                 accessToken: token
             })
         } else {
             return res.status(401).send({
-                status: "Password is incorrect"
+                status: "Login info is incorrect"
             })
         }
        
