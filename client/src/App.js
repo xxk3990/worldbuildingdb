@@ -5,7 +5,7 @@ import {Routes, Route, Outlet} from 'react-router-dom';
 import CreateAccount from './CreateAccount';
 import Worlds from './Worlds';
 import Login from './Login';
-import { AdminRoute, ProtectedRoute} from "./route-components";
+import { AdminRoute, ProtectedRoute} from "./route-guards";
 import HomeLoggedOut from './Home-LoggedOut';
 import Navbar from './Navbar';
 import Profile from './Profile';
@@ -22,7 +22,7 @@ export default function App() {
           <Route path="/" element={ <HomeLoggedOut />} />
           <Route path="/login" element={<Login />} />
           <Route path="/createAccount" element={<CreateAccount />} />
-          <Route element={<><Navbar/> <Outlet /></>}>
+          <Route element={<> <Navbar/> <Outlet /></>}>
             <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
             <Route path="/worlds" element={<ProtectedRoute><Worlds /></ProtectedRoute>} />
             <Route path="/locations" element={<ProtectedRoute><Locations /></ProtectedRoute>} />

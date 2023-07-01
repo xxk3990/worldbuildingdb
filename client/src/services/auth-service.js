@@ -1,6 +1,5 @@
-import { createContext, useContext, useMemo, useState } from "react";
-import {Navigate, useNavigate, useOutlet, Link } from "react-router-dom";
-const AuthContext = createContext();
+import jwt_decode from "jwt-decode";
+import { useState } from "react";
 
 export const useLocalStorage = (keyName) => {
   const [storedValue, setStoredValue] = useState(() => {
@@ -25,6 +24,32 @@ export const useLocalStorage = (keyName) => {
   return [storedValue, setValue];
 };
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+export const handleLogin = async (url, body) => {
+  const loginParams = {
+    method: 'POST',
+    headers: {"Content-Type": 'application/json'},
+    body: JSON.stringify(body)
+  }
+  return fetch(url, loginParams)
+}
+
+export const handleLogout = async () => {
+  localStorage.clear();
+  window.location.href = '/'
+}
+
+export const checkAuth = () => {
+  let authorized = true;
+  const token = localStorage.getItem("authToken");
+  try {
+    const decodedToken = jwt_decode(token)
+    if(decodedToken.exp * 1000 > Date.now()) {
+      authorized = true;
+    } else {
+      authorized = false;
+    }
+  } catch {
+    authorized = false;
+  }
+  return authorized;
+}

@@ -1,27 +1,25 @@
-export const handleGet = async (url, token, setDataInComponent) => {
+export const handleGet = async (endpoint, token, setDataInComponent) => {
+    const url = `http://localhost:3000/${endpoint}`
     await fetch(url, {
         method: 'GET',
-        headers: {"Authorization": `Bearer ${token}`} //pass in token as header
-    }).then(response => {
-        if(response.status === 401) {
-            localStorage.clear();
-            window.location.href = "/";
-        } else {
-            return response.json()
-        }
-    }, []).then(responseData => {
-    //The data for the component is the main setXXX variable (example: setWorlds, setLocations)
+        headers: {
+            "Authorization": `Bearer ${token}`
+        } //pass in token as header
+    }).then(response => response.json(),
+        []).then(responseData => {
+        //The data for the component is the main setXXX variable (examples: setWorlds, setLocations)
         return setDataInComponent(responseData); //set it equal to data from API
     })
 }
 
-export const handlePost = (url, token, body) => {
+export const handlePost = (endpoint, token, body) => {
+    const url = `http://localhost:3000/${endpoint}`;
     const requestParams = {
         method: 'POST',
         headers: {
-          "Content-Type" : 'application/json',
-          "Authorization" : `Bearer ${token}`
-        }, 
+            "Content-Type": 'application/json',
+            "Authorization": `Bearer ${token}`
+        },
         body: JSON.stringify(body)
     }
     return fetch(url, requestParams)

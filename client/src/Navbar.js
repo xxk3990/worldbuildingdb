@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './styles/navbar.css'
 import React  from 'react';
 import { Link } from 'react-router-dom';
+import { handleLogout } from './services/auth-service';
 export default function Navbar() {
     const role = localStorage.getItem("userRole")
     if(role === "Admin") {
@@ -13,6 +14,7 @@ export default function Navbar() {
                         <li className='nav-item'><Link to='/profile'>Profile</Link></li>
                         <li className='nav-item'><Link to='/users'>All Users</Link></li>
                         <li className='nav-item'><Link to='/adminWorlds'>All Worlds</Link></li>
+                        <li className='nav-item'><button type ="button" className='logout-btn' onClick = {handleLogout}>Logout</button></li>
                     </ul>
                 </section>
             </div>
@@ -24,6 +26,7 @@ export default function Navbar() {
                     <ul className = "nav-links">
                         <li className='nav-item'><Link to='/worlds'>Worlds</Link></li>
                         <li className='nav-item'><Link to='/profile'>Profile</Link></li>
+                        <li className='nav-item'><button type ="button" className='logout-btn' onClick = {handleLogout}>Logout</button></li>
                     </ul>
                 </section>
             </div>

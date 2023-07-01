@@ -90,7 +90,7 @@ const userProfile = async (req, res) => {
         },
         raw: true,
     }, {
-        include: [{//this is not working, profile page on front-end thinks worlds_created = undefined
+        include: [{//this is not working, profile page on front-end thinks worlds_created is undefined
             model: models.World,
             attributes: ["world_name", "world_type"],
             as: "worlds_created"

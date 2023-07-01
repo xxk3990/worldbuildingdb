@@ -4,6 +4,7 @@ import React, { useState, useMemo, useEffect}  from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Snackbar } from '@mui/material';
 import { handleGet, handlePost } from './services/requests-service';
+import { checkAuth } from './services/auth-service';
 export default function Locations() {
   const navigate = useNavigate()
   const [newLocation, setNewLocation] = useState({
@@ -19,8 +20,15 @@ export default function Locations() {
   const worldName = localStorage.getItem("worldName")
   const currentWorld = localStorage.getItem("world")
   const getLocations = () => { //get worlds method
-    const url = `http://localhost:3000/locations?id=${currentWorld}`; //get data unique to the current world id
-    handleGet(url, currentUserToken, setLocations)
+    const authorized = checkAuth()
+    if(authorized === false) {
+      localStorage.clear();
+      navigate('/');
+    } else {
+      const endpoint = `locations?id=${currentWorld}`; //get data unique to the current world id
+      handleGet(endpoint, currentUserToken, setLocations)
+    }
+    
   }
   useEffect(() => {
     document.title = "Locations – Worldbuilding DB"
@@ -32,7 +40,12 @@ export default function Locations() {
   }
   
   const postLocation = async () => {
-    const postURL = `http://localhost:3000/addLocation`
+    const authorized = checkAuth()
+    if(authorized === false) {
+      localStorage.clear();
+      navigate('/');
+    } else {
+    const endpoint = `addLocation`
     const requestBody = {
       location_name: newLocation.locationName,
       location_type: newLocation.locationType,
@@ -42,7 +55,7 @@ export default function Locations() {
     }
     console.log('Params:', requestBody)
     try {
-      const response = await handlePost(postURL, currentUserToken, requestBody)
+      const response = await handlePost(endpoint, currentUserToken, requestBody)
       const data = await response.json()
       if(response.status === 200 || response.status === 201) {
         setLocations([...locations, data])
@@ -64,6 +77,7 @@ export default function Locations() {
     } catch {
       alert("An error occurred.")
     }
+  }
   
   }
   if(locations === undefined) {

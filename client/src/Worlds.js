@@ -4,7 +4,9 @@ import React, { useState, useMemo, useEffect}  from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Snackbar } from '@mui/material';
 import { handleGet, handlePost } from './services/requests-service';
+import { checkAuth } from "./services/auth-service";
 export default function Worlds() {
+  const navigate = useNavigate()
   const [newWorld, setNewWorld] = useState({
     worldName: '',
     worldType: '',
@@ -16,8 +18,14 @@ export default function Worlds() {
   const currentUserToken = localStorage.getItem("authToken")
   const currentUserID = localStorage.getItem("user")
   const getWorlds = () => {
-    const url = `http://localhost:3000/worlds?id=${currentUserID}`; //get data unique to the current user id
-    handleGet(url, currentUserToken, setWorlds)
+    const authorized = checkAuth();
+    if(authorized === false) {
+      localStorage.clear();
+      navigate('/');
+    } else {
+      const endpoint = `worlds?id=${currentUserID}`; //get data unique to the current user id
+      handleGet(endpoint, currentUserToken, setWorlds)
+    }
   }
   
   useEffect(() => {
@@ -30,35 +38,41 @@ export default function Worlds() {
   }
   
   const postWorld = async () => {
-    const postURL = `http://localhost:3000/addWorld`
-    const requestBody = {
-      world_name: newWorld.worldName,
-      world_type: newWorld.worldType,
-      user: currentUserID,
-      description: newWorld.description
-    }
-    console.log('Params:', requestBody)
-    try {
-      const response = await handlePost(postURL, currentUserToken, requestBody)
-      const data = await response.json()
-      if(response.status === 200 || response.status === 201) {
-        setWorlds([...worlds, data])
-        setNewWorld({
-          worldName: '',
-          worldType: '',
-          user: '',
-          description:''
-        })
-        getWorlds();
-        setOpenSnackbar(true);
-        setTimeout(() => {
-          setOpenSnackbar(false);
-        }, 1500)
-      } else {
-        alert("An error occurred.")
+    const authorized = checkAuth()
+    if(authorized === false) {
+      localStorage.clear();
+      navigate('/');
+    } else {
+      const endpoint = `addWorld`
+      const requestBody = {
+        world_name: newWorld.worldName,
+        world_type: newWorld.worldType,
+        user: currentUserID,
+        description: newWorld.description
       }
-    } catch {
-      alert("An error occurred while saving this world.")
+      console.log('Params:', requestBody)
+      try {
+        const response = await handlePost(endpoint, currentUserToken, requestBody)
+        const data = await response.json()
+        if(response.status === 200 || response.status === 201) {
+          setWorlds([...worlds, data])
+          setNewWorld({
+            worldName: '',
+            worldType: '',
+            user: '',
+            description:''
+          })
+          getWorlds();
+          setOpenSnackbar(true);
+          setTimeout(() => {
+            setOpenSnackbar(false);
+          }, 1500)
+        } else {
+          alert("An error occurred.")
+        }
+      } catch {
+        alert("An error occurred while saving this world.")
+      }
     }
   }
 

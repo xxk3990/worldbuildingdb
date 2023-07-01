@@ -4,17 +4,25 @@ import React, { useState, useEffect }  from 'react';
 import "./styles/profile.css"
 import { useNavigate } from 'react-router-dom';
 import { handleGet } from './services/requests-service';
+import { checkAuth } from './services/auth-service';
 
 export default function Profile() {
     const [userProfile, setUserProfile] = useState([]);
+    const navigate = useNavigate()
     useEffect(() => {
        document.title = "Profile – Worldbuilding DB"
     })
     const currentUserToken = localStorage.getItem("authToken")
     const currentUserID = localStorage.getItem("user")
     const getProfile = () => {
-        const url = `http://localhost:3000/profile?id=${currentUserID}`; //get data unique to the current user id
-        handleGet(url, currentUserToken, setUserProfile)
+        const authorized = checkAuth()
+        if(authorized === false) {
+            localStorage.clear();
+            navigate('/')
+        } else {
+            const endpoint = `profile?id=${currentUserID}`; //get data unique to the current user id
+            handleGet(endpoint, currentUserToken, setUserProfile)
+        }
     }
     useEffect(() => {
         getProfile()
