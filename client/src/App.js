@@ -18,18 +18,18 @@ export default function App() {
     document.title = "Worldbuilding DB"
   })
   return (
-        <Routes>
-          <Route path="/" element={ <HomeLoggedOut />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/createAccount" element={<CreateAccount />} />
-          <Route element={<> <Navbar/> <Outlet /></>}>
-            <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-            <Route path="/worlds" element={<ProtectedRoute><Worlds /></ProtectedRoute>} />
-            <Route path="/locations" element={<ProtectedRoute><Locations /></ProtectedRoute>} />
-            <Route path="/adminWorlds" element={<ProtectedRoute><AdminRoute><AdminWorlds /></AdminRoute></ProtectedRoute>} />
-            <Route path="/users" element={<ProtectedRoute><AdminRoute><Users /></AdminRoute></ProtectedRoute>} />
-          </Route>
-        </Routes>
+    <Routes>
+      <Route path="/" element={ <HomeLoggedOut />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/createAccount" element={<CreateAccount />} />
+      <Route element={<> <Navbar/> <Outlet /></>}>
+        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        <Route path="/worlds" element={<ProtectedRoute><Worlds /></ProtectedRoute>} />
+        <Route path="/locations" element={<ProtectedRoute><Locations /></ProtectedRoute>} />
+        <Route path="/adminWorlds" element={<ProtectedRoute><AdminRoute><AdminWorlds /></AdminRoute></ProtectedRoute>} />
+        <Route path="/users" element={<ProtectedRoute><AdminRoute><Users /></AdminRoute></ProtectedRoute>} />
+      </Route>
+    </Routes>   
   );
   
 }

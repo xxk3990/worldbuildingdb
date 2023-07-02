@@ -7,6 +7,7 @@ import { handleGet, handlePost } from './services/requests-service';
 import { checkAuth } from "./services/auth-service";
 export default function Worlds() {
   const navigate = useNavigate()
+  localStorage.setItem("page", "worlds");
   const [newWorld, setNewWorld] = useState({
     worldName: '',
     worldType: '',
@@ -15,7 +16,6 @@ export default function Worlds() {
   })
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [worlds, setWorlds] = useState([])
-  const currentUserToken = localStorage.getItem("authToken")
   const currentUserID = localStorage.getItem("user")
   const getWorlds = () => {
     const authorized = checkAuth();
@@ -24,7 +24,7 @@ export default function Worlds() {
       navigate('/');
     } else {
       const endpoint = `worlds?id=${currentUserID}`; //get data unique to the current user id
-      handleGet(endpoint, currentUserToken, setWorlds)
+      handleGet(endpoint, setWorlds)
     }
   }
   
@@ -38,7 +38,7 @@ export default function Worlds() {
   }
   
   const postWorld = async () => {
-    const authorized = checkAuth()
+    const authorized = await checkAuth()
     if(authorized === false) {
       localStorage.clear();
       navigate('/');
@@ -52,7 +52,7 @@ export default function Worlds() {
       }
       console.log('Params:', requestBody)
       try {
-        const response = await handlePost(endpoint, currentUserToken, requestBody)
+        const response = await handlePost(endpoint, requestBody)
         const data = await response.json()
         if(response.status === 200 || response.status === 201) {
           setWorlds([...worlds, data])

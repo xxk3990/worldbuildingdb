@@ -2,9 +2,11 @@ import {Navigate} from "react-router-dom";
 
 import {useLocalStorage } from "./services/auth-service";
 
+import { checkAuth } from "./services/auth-service";
+
 export const ProtectedRoute = ({ children }) => {
-    const user = useLocalStorage("authToken")
-    if (!user[0]) {
+    const user = useLocalStorage("user")
+    if (user[0] === null) {
       // user is not authenticated
       return <Navigate to="/" />;
     }

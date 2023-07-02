@@ -1,6 +1,7 @@
 // const {Client} = require('pg')
 
 //const { now } = require('sequelize/types/utils');
+const cookie = require("cookie-parser")
 const {
     v4: uuidv4
 } = require('uuid')
@@ -28,24 +29,10 @@ const createAccount = async (req, res) => {
         // updated_at: now
     }
     models.User.create(newUser);
-    const session = uuidv4();
-    const secret = process.env.SECRET; //grab secret
-    const token = jwt.sign({
-        id: newUser.id
-    }, secret, {
-        expiresIn: "30 minutes",
-    }) //set session up
-    return res.status(200).send({ //return accessToken
-        newUser,
-        user: newUser.id,
-        email: newUser.email,
-        user_role: newUser.user_role,
-        session_id: session,
-        accessToken: token
-    })
+    return res.status(200).send()
 }
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
     const matchingUser = await models.User.findOne({
         where: {
             'email': req.body.email,
@@ -54,7 +41,7 @@ const login = async (req, res) => {
     })
     if (matchingUser.length !== 0) {
         const passwordValid = await bcrypt.compare(req.body.password, matchingUser.password)
-        if(passwordValid) {
+        if (passwordValid) {
             const session = uuidv4();
             const secret = process.env.SECRET; //grab secret
             const token = jwt.sign({
@@ -62,23 +49,25 @@ const login = async (req, res) => {
             }, secret, {
                 expiresIn: "30 minutes"
             }) //set session up
-    
-            return res.status(200).send({ //return accessToken
+            const requiredUserData = {
                 user: matchingUser.id,
-                email: matchingUser.email,
-                user_role: matchingUser.user_role,
-                session_id: session,
-                accessToken: token
-            })
+                user_role: matchingUser.user_role
+            }
+            res.cookie("token", token, {
+                httpOnly: true,
+                secure: false,
+                maxAge: 1800000, //30 min
+            }).status(200).json(requiredUserData)
+            
         } else {
             return res.status(401).send({
                 status: "Login info is incorrect"
             })
         }
-       
+
     } else {
         return res.status(401).send({
-            status: "No user with email address provided exists."
+            status: "No user with info provided exists."
         })
     }
 }
@@ -90,7 +79,7 @@ const userProfile = async (req, res) => {
         },
         raw: true,
     }, {
-        include: [{//this is not working, profile page on front-end thinks worlds_created is undefined
+        include: [{ //this is not working, profile page on front-end thinks worlds_created is undefined
             model: models.World,
             attributes: ["world_name", "world_type"],
             as: "worlds_created"
@@ -108,5 +97,5 @@ const userProfile = async (req, res) => {
 module.exports = {
     createAccount,
     login,
-    userProfile
+    userProfile,
 }

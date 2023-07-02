@@ -28,9 +28,10 @@ export const handleLogin = async (url, body) => {
   const loginParams = {
     method: 'POST',
     headers: {"Content-Type": 'application/json'},
+    credentials: "include",
     body: JSON.stringify(body)
   }
-  return fetch(url, loginParams)
+  return await fetch(url, loginParams)
 }
 
 export const handleLogout = async () => {
@@ -38,18 +39,15 @@ export const handleLogout = async () => {
   window.location.href = '/'
 }
 
-export const checkAuth = () => {
-  let authorized = true;
-  const token = localStorage.getItem("authToken");
-  try {
-    const decodedToken = jwt_decode(token)
-    if(decodedToken.exp * 1000 > Date.now()) {
-      authorized = true;
-    } else {
-      authorized = false;
-    }
-  } catch {
-    authorized = false;
+export const checkAuth = async() => {
+  let authenticated = false;
+  const response = await fetch('http://localhost:3000/verify', {
+    method: 'GET',
+  })
+  if(response.status === 401 || response.status === 403) {
+    authenticated = false
+  } else {
+    authenticated = true
   }
-  return authorized;
+  return authenticated;
 }

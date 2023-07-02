@@ -6,6 +6,7 @@ import { Snackbar } from '@mui/material';
 import { handleGet, handlePost } from './services/requests-service';
 import { checkAuth } from './services/auth-service';
 export default function Locations() {
+  localStorage.setItem("page", "locations");
   const navigate = useNavigate()
   const [newLocation, setNewLocation] = useState({
     locationName: '',
@@ -16,17 +17,16 @@ export default function Locations() {
   })
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [locations, setLocations] = useState([])
-  const currentUserToken = localStorage.getItem("authToken")
   const worldName = localStorage.getItem("worldName")
   const currentWorld = localStorage.getItem("world")
-  const getLocations = () => { //get worlds method
+  const getLocations = async () => { //get worlds method
     const authorized = checkAuth()
     if(authorized === false) {
       localStorage.clear();
       navigate('/');
     } else {
       const endpoint = `locations?id=${currentWorld}`; //get data unique to the current world id
-      handleGet(endpoint, currentUserToken, setLocations)
+      handleGet(endpoint, setLocations)
     }
     
   }
@@ -45,40 +45,39 @@ export default function Locations() {
       localStorage.clear();
       navigate('/');
     } else {
-    const endpoint = `addLocation`
-    const requestBody = {
-      location_name: newLocation.locationName,
-      location_type: newLocation.locationType,
-      world: currentWorld,
-      inhabitants: newLocation.inhabitants,
-      description: newLocation.description
-    }
-    console.log('Params:', requestBody)
-    try {
-      const response = await handlePost(endpoint, currentUserToken, requestBody)
-      const data = await response.json()
-      if(response.status === 200 || response.status === 201) {
-        setLocations([...locations, data])
-        setNewLocation({
-          locationName: '',
-          locationType: '',
-          world: '',
-          inhabitants:'',
-          description: ''
-        })
-        getLocations();
-        setOpenSnackbar(true);
-        setTimeout(() => {
-          setOpenSnackbar(false);
-        }, 1500)
-      } else {
+      const endpoint = `addLocation`
+      const requestBody = {
+        location_name: newLocation.locationName,
+        location_type: newLocation.locationType,
+        world: currentWorld,
+        inhabitants: newLocation.inhabitants,
+        description: newLocation.description
+      }
+      console.log('Params:', requestBody)
+      try {
+        const response = await handlePost(endpoint, requestBody)
+        const data = await response.json()
+        if(response.status === 200 || response.status === 201) {
+          setLocations([...locations, data])
+          setNewLocation({
+            locationName: '',
+            locationType: '',
+            world: '',
+            inhabitants:'',
+            description: ''
+          })
+          getLocations();
+          setOpenSnackbar(true);
+          setTimeout(() => {
+            setOpenSnackbar(false);
+          }, 1500)
+        } else {
+          alert("An error occurred.")
+        }
+      } catch {
         alert("An error occurred.")
       }
-    } catch {
-      alert("An error occurred.")
     }
-  }
-  
   }
   if(locations === undefined) {
     return (

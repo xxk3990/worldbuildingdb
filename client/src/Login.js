@@ -5,6 +5,7 @@ import { Snackbar } from '@mui/material';
 import { handleLogin } from './services/auth-service';
 import { useNavigate } from 'react-router-dom';
 export default function Login() {
+  const page = localStorage.getItem("page")
   const navigate = useNavigate()
   const [login, setLogin] = useState({
       email: '',
@@ -25,10 +26,14 @@ export default function Login() {
     navigate('/createAccount')
   }
 
-  const navigateToWorlds = () => {
+  const navigateToRequestedPage = () => {
     setTimeout(() => {
       setOpenSnackbar(false);
-      navigate('/worlds')
+      if(page === null) {
+        navigate('/worlds')
+      } else {
+        navigate(`/${page}`);
+      }
     }, 2000)
   }
   
@@ -42,12 +47,11 @@ export default function Login() {
       const response = await handleLogin(postURL, requestBody)
       const data = await response.json()
       if(response.status === 200 || response.status === 201) {
-       //grab access token sent in response, add to local storage
-          localStorage.setItem("authToken", data.accessToken)
+       //grab data in response, add to local storage
           localStorage.setItem("user", data.user);
           localStorage.setItem("userRole", data.user_role)
           setOpenSnackbar(true)
-          navigateToWorlds()
+          navigateToRequestedPage()
       } else if(response.status === 401) {
         alert(`${data.status}`)
       }

@@ -9,10 +9,10 @@ import { checkAuth } from './services/auth-service';
 export default function Profile() {
     const [userProfile, setUserProfile] = useState([]);
     const navigate = useNavigate()
+    localStorage.setItem("page", "profile")
     useEffect(() => {
        document.title = "Profile – Worldbuilding DB"
     })
-    const currentUserToken = localStorage.getItem("authToken")
     const currentUserID = localStorage.getItem("user")
     const getProfile = () => {
         const authorized = checkAuth()
@@ -21,7 +21,7 @@ export default function Profile() {
             navigate('/')
         } else {
             const endpoint = `profile?id=${currentUserID}`; //get data unique to the current user id
-            handleGet(endpoint, currentUserToken, setUserProfile)
+            handleGet(endpoint, setUserProfile)
         }
     }
     useEffect(() => {

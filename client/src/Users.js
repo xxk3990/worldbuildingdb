@@ -13,9 +13,8 @@ export default function Users() {
       localStorage.clear();
       window.location.href = '/'
     } else {
-      const currentUserToken = localStorage.getItem("authToken")
       const endpoint = `users`;
-      handleGet(endpoint, currentUserToken, setUsers)
+      handleGet(endpoint, setUsers)
     }
   }
   useEffect(() => {
