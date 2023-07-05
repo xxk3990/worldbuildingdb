@@ -39,9 +39,9 @@ export const handleLogout = async () => {
   window.location.href = '/'
 }
 
-export const checkAuth = async() => {
+export const checkAuth = () => {
   let authenticated = false;
-  const response = await fetch('http://localhost:3000/verify', {
+  const response = fetch('http://localhost:3000/verify', {
     method: 'GET',
   })
   if(response.status === 401 || response.status === 403) {

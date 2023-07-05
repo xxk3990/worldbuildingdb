@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const process = require("process")
 
-const verifyAuth = async(req, res, next) => {
+const verifyAuth = (req, res, next) => {
     const token = req.cookies.token;
     const secret = process.env.SECRET;
     console.log('cookie token:',req.cookies.token);
@@ -12,8 +12,8 @@ const verifyAuth = async(req, res, next) => {
         if(err) {
             return res.status(403).json("Invalid Token!")
         }
-        req.user = decoded.id
-        next();
+        req.query.id = decoded.id
+        return next()
     });
 }
 

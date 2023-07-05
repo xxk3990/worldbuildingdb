@@ -19,6 +19,7 @@ export default function Worlds() {
   const currentUserID = localStorage.getItem("user")
   const getWorlds = () => {
     const authorized = checkAuth();
+    console.log("Authorization status:", authorized);
     if(authorized === false) {
       localStorage.clear();
       navigate('/');
@@ -38,12 +39,12 @@ export default function Worlds() {
   }
   
   const postWorld = async () => {
-    const authorized = await checkAuth()
+    const authorized = checkAuth()
     if(authorized === false) {
       localStorage.clear();
       navigate('/');
     } else {
-      const endpoint = `addWorld`
+      const endpoint = `addWorld?id=${currentUserID}`
       const requestBody = {
         world_name: newWorld.worldName,
         world_type: newWorld.worldType,
@@ -76,7 +77,7 @@ export default function Worlds() {
     }
   }
 
-  if(worlds === undefined) {
+  if(worlds.message === "No worlds added yet.") {
     return (
       <div className="Worlds">
         <h4>No world found.</h4>

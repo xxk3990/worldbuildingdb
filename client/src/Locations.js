@@ -19,13 +19,14 @@ export default function Locations() {
   const [locations, setLocations] = useState([])
   const worldName = localStorage.getItem("worldName")
   const currentWorld = localStorage.getItem("world")
+  const currentUser = localStorage.getItem("user");
   const getLocations = async () => { //get worlds method
     const authorized = checkAuth()
     if(authorized === false) {
       localStorage.clear();
       navigate('/');
     } else {
-      const endpoint = `locations?id=${currentWorld}`; //get data unique to the current world id
+      const endpoint = `locations?worldID=${currentWorld}&id=${currentUser}`; //get data unique to the current world id
       handleGet(endpoint, setLocations)
     }
     
@@ -33,6 +34,7 @@ export default function Locations() {
   useEffect(() => {
     document.title = "Locations – Worldbuilding DB"
     getLocations();
+    console.log(locations);
   }, [])
   
   const handleChange = (name, value) => {
@@ -45,7 +47,7 @@ export default function Locations() {
       localStorage.clear();
       navigate('/');
     } else {
-      const endpoint = `addLocation`
+      const endpoint = `addLocation?id=${currentUser}`
       const requestBody = {
         location_name: newLocation.locationName,
         location_type: newLocation.locationType,
@@ -79,7 +81,7 @@ export default function Locations() {
       }
     }
   }
-  if(locations === undefined) {
+  if(locations.message === "No locations added yet.") {
     return (
       <div className="Locations">
         <Snackbar open={openSnackbar} autoHideDuration={1500} message="Location Added Successfully!" anchorOrigin={{horizontal: "center", vertical:"top"}}/>

@@ -4,7 +4,7 @@ export const handleGet = async (endpoint, setDataInComponent) => {
         method: 'GET',
         credentials: "include"
     }).then(response => response.json(),
-        []).then(responseData => {
+    []).then(responseData => {
         //The data for the component is the main setXXX variable (examples: setWorlds, setLocations)
         return setDataInComponent(responseData); //set it equal to data from API
     })
