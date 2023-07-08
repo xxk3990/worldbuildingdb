@@ -45,19 +45,20 @@ const login = async (req, res, next) => {
             const session = uuidv4();
             const secret = process.env.SECRET; //grab secret
             const token = jwt.sign({
-                id: matchingUser.id
+                id: matchingUser.id,
             }, secret, {
-                expiresIn: "30 minutes"
+                algorithm: "HS256",
+                expiresIn: "30 minutes",
             }) //set session up
             const requiredUserData = {
                 user: matchingUser.id,
                 user_role: matchingUser.user_role
             }
-            res.cookie("token", token, {
+            return res.cookie("token", token, {
                 httpOnly: true,
                 secure: false,
                 maxAge: 1800000, //30 min
-            }).status(200).json(requiredUserData)
+            }).status(200).send(requiredUserData)
             
         } else {
             return res.status(401).send({

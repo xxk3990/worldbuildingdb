@@ -26,11 +26,11 @@ const connectToDB = async () => {
 
 (async () => {
     await connectToDB();
-    router(app);
-    app.listen(port, (err) => {
-        if(err) {
-            throw err;
-        }
-        console.log(`Listening on port ${port}`);
-    });
 })();
+router(app);
+app.listen(port, (err) => {
+    if(err) {
+        throw err;
+    }
+    console.log(`Listening on port ${port}`);
+});

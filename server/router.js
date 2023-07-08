@@ -7,13 +7,13 @@ const mid = require("./middleware/verify-auth.js")
 const router = (app) => {
     app.post('/login', users.login)
     app.post('/addUser', users.createAccount)
-    app.get('/verify', mid.verifyAuth)
-    app.get('/users', mid.verifyAuth, admin.getAllUsers)
-    app.post('/addWorld', mid.verifyAuth, worlds.addWorld)
-    app.get('/worlds', mid.verifyAuth, worlds.getWorlds)
-    app.get('/profile', mid.verifyAuth, users.userProfile)
-    app.get('/locations', mid.verifyAuth, locs.getAllLocations)
-    app.post('/addLocation', mid.verifyAuth, locs.addLocation)
+    app.get('/verify', mid.verifyRequestAuth, mid.verifySession)
+    app.get('/users', mid.verifyRequestAuth, admin.getAllUsers)
+    app.post('/addWorld', mid.verifyRequestAuth, worlds.addWorld)
+    app.get('/worlds', mid.verifyRequestAuth, worlds.getWorlds)
+    app.get('/profile', mid.verifyRequestAuth, users.userProfile)
+    app.get('/locations', mid.verifyRequestAuth, locs.getAllLocations)
+    app.post('/addLocation', mid.verifyRequestAuth, locs.addLocation)
 }
 
 module.exports = router;

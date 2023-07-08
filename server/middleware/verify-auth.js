@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const process = require("process")
 
-const verifyAuth = (req, res, next) => {
+const verifyRequestAuth = (req, res, next) => {
     const token = req.cookies.token;
     const secret = process.env.SECRET;
     console.log('cookie token:',req.cookies.token);
@@ -17,4 +17,10 @@ const verifyAuth = (req, res, next) => {
     });
 }
 
-module.exports = {verifyAuth}
+const verifySession = (req, res) => {
+    console.log("verify session method hit")
+    return res.status(200).send({
+        authenticated: true,
+    })
+}
+module.exports = {verifyRequestAuth, verifySession}

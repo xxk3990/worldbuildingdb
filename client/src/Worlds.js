@@ -17,8 +17,8 @@ export default function Worlds() {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [worlds, setWorlds] = useState([])
   const currentUserID = localStorage.getItem("user")
-  const getWorlds = () => {
-    const authorized = checkAuth();
+  const getWorlds = async () => {
+    const authorized = await checkAuth();
     console.log("Authorization status:", authorized);
     if(authorized === false) {
       localStorage.clear();

@@ -5,8 +5,8 @@ import {useLocalStorage } from "./services/auth-service";
 import { checkAuth } from "./services/auth-service";
 
 export const ProtectedRoute = ({ children }) => {
-    const user = useLocalStorage("user")
-    if (user[0] === null) {
+    const user = checkAuth()
+    if (!user) {
       // user is not authenticated
       return <Navigate to="/" />;
     }
