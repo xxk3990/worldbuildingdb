@@ -21,7 +21,7 @@ export default function Locations() {
   const currentWorld = localStorage.getItem("world")
   const currentUser = localStorage.getItem("user");
   const getLocations = async () => { //get worlds method
-    const authorized = checkAuth()
+    const authorized = await checkAuth()
     if(authorized === false) {
       localStorage.clear();
       navigate('/');

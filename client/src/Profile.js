@@ -14,10 +14,10 @@ export default function Profile() {
        document.title = "Profile – Worldbuilding DB"
     })
     const currentUserID = localStorage.getItem("user")
-    const getProfile = () => {
-        const authorized = checkAuth()
+    const getProfile = async () => {
+        const authorized = await checkAuth()
         if(authorized === false) {
-            localStorage.clear();
+            //localStorage.clear();
             navigate('/')
         } else {
             const endpoint = `profile?id=${currentUserID}`; //get data unique to the current user id

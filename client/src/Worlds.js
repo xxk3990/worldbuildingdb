@@ -21,7 +21,7 @@ export default function Worlds() {
     const authorized = await checkAuth();
     console.log("Authorization status:", authorized);
     if(authorized === false) {
-      localStorage.clear();
+      //localStorage.clear();
       navigate('/');
     } else {
       const endpoint = `worlds?id=${currentUserID}`; //get data unique to the current user id

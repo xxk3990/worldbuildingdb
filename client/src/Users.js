@@ -7,8 +7,8 @@ import { checkAuth } from './services/auth-service';
 
 export default function Users() {
   const [users, setUsers] = useState([]);
-  const fetchUsers = () => {
-    const authorized = checkAuth()
+  const fetchUsers = async () => {
+    const authorized = await checkAuth()
     if(authorized === false) {
       localStorage.clear();
       window.location.href = '/'
