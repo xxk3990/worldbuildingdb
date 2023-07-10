@@ -36,7 +36,14 @@ export const handleLogin = async (url, body) => {
 
 export const handleLogout = async () => {
   localStorage.clear();
-  window.location.href = '/'
+  const url = `http://localhost:3000/logout`
+  const logoutParams = {
+    method: "POST",
+    headers: {"Content-Type": 'application/json'},
+    credentials: "include",
+    body: ""
+  }
+  return await fetch(url, logoutParams)
 }
 
 export const checkAuth = async () => {

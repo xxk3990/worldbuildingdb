@@ -73,6 +73,13 @@ const login = async (req, res, next) => {
     }
 }
 
+const logout = async (req, res) => {
+    return res.status(200).clearCookie("token", {
+        httpOnly: true,
+        secure: false
+    }).send();
+}
+
 const userProfile = async (req, res) => {
     const matchingUser = await models.User.findOne({
         where: {
@@ -98,5 +105,6 @@ const userProfile = async (req, res) => {
 module.exports = {
     createAccount,
     login,
+    logout,
     userProfile,
 }

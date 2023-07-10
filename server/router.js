@@ -14,6 +14,7 @@ const router = (app) => {
     app.get('/profile', mid.verifyRequestAuth, users.userProfile)
     app.get('/locations', mid.verifyRequestAuth, locs.getAllLocations)
     app.post('/addLocation', mid.verifyRequestAuth, locs.addLocation)
+    app.post('/logout', mid.verifyRequestAuth, users.logout)
 }
 
 module.exports = router;
