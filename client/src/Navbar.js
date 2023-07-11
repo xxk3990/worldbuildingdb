@@ -14,7 +14,7 @@ export default function Navbar() {
         setTimeout(async() => {
             await handleLogout()
             setOpenSnackbar(false)
-            navigate("/")
+            navigate("/notLoggedIn")
         }, 2000)
         
     }

@@ -7,7 +7,7 @@ import { handleGet, handlePost } from './services/requests-service';
 import { checkAuth } from "./services/auth-service";
 export default function Worlds() {
   const navigate = useNavigate()
-  localStorage.setItem("page", "worlds");
+  localStorage.setItem("page", "");
   const [newWorld, setNewWorld] = useState({
     worldName: '',
     worldType: '',
@@ -21,8 +21,8 @@ export default function Worlds() {
     const authorized = await checkAuth();
     console.log("Authorization status:", authorized);
     if(authorized === false) {
-      //localStorage.clear();
-      navigate('/');
+      localStorage.clear();
+      navigate('/notLoggedIn');
     } else {
       const endpoint = `worlds?id=${currentUserID}`; //get data unique to the current user id
       handleGet(endpoint, setWorlds)

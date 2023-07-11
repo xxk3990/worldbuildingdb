@@ -8,7 +8,7 @@ export const ProtectedRoute = ({ children }) => {
     const user = checkAuth()
     if (!user) {
       // user is not authenticated
-      return <Navigate to="/" />;
+      return <Navigate to="/notLoggedIn" />;
     }
     return children;
 };

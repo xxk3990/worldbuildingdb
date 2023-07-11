@@ -17,8 +17,8 @@ export default function Profile() {
     const getProfile = async () => {
         const authorized = await checkAuth()
         if(authorized === false) {
-            //localStorage.clear();
-            navigate('/')
+            localStorage.clear();
+            navigate('/notLoggedIn')
         } else {
             const endpoint = `profile?id=${currentUserID}`; //get data unique to the current user id
             handleGet(endpoint, setUserProfile)

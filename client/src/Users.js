@@ -11,7 +11,7 @@ export default function Users() {
     const authorized = await checkAuth()
     if(authorized === false) {
       localStorage.clear();
-      window.location.href = '/'
+      window.location.href = '/notLoggedIn'
     } else {
       const endpoint = `users`;
       handleGet(endpoint, setUsers)
