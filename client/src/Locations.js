@@ -24,7 +24,7 @@ export default function Locations() {
     const authorized = await checkAuth()
     if(authorized === false) {
       localStorage.clear();
-      navigate('/notLoggedIn');
+      navigate('/login');
     } else {
       const endpoint = `locations?worldID=${currentWorld}&id=${currentUser}`; //get data unique to the current world id
       handleGet(endpoint, setLocations)

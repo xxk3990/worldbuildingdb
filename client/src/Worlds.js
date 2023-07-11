@@ -22,7 +22,7 @@ export default function Worlds() {
     console.log("Authorization status:", authorized);
     if(authorized === false) {
       localStorage.clear();
-      navigate('/notLoggedIn');
+      navigate('/login');
     } else {
       const endpoint = `worlds?id=${currentUserID}`; //get data unique to the current user id
       handleGet(endpoint, setWorlds)

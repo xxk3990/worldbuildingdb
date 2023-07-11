@@ -6,12 +6,13 @@ import { handleGet } from './services/requests-service';
 import { checkAuth } from './services/auth-service';
 
 export default function Users() {
+  const navigate = useNavigate()
   const [users, setUsers] = useState([]);
   const fetchUsers = async () => {
     const authorized = await checkAuth()
     if(authorized === false) {
       localStorage.clear();
-      window.location.href = '/notLoggedIn'
+      navigate("/login")
     } else {
       const endpoint = `users`;
       handleGet(endpoint, setUsers)

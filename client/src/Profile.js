@@ -18,7 +18,7 @@ export default function Profile() {
         const authorized = await checkAuth()
         if(authorized === false) {
             localStorage.clear();
-            navigate('/notLoggedIn')
+            navigate('/login')
         } else {
             const endpoint = `profile?id=${currentUserID}`; //get data unique to the current user id
             handleGet(endpoint, setUserProfile)
