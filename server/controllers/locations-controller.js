@@ -4,7 +4,7 @@ const {
 } = require('uuid')
 const getAllLocations = async (req, res) => {
 
-    const locations = await models.Location.findAll({where: {'world_uuid' : req.query.id}, raw:true},
+    const locations = await models.Location.findAll({where: {'world_uuid' : req.query.worldID}, raw:true},
         {
         include: [{
             model: models.World,

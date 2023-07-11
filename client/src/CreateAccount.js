@@ -1,20 +1,22 @@
 import logo from './logo.svg';
 import './App.css';
 import React, { useState, useMemo, useEffect}  from 'react';
+import { useNavigate } from 'react-router';
 
 export default function CreateAccount() {
-    useEffect(() => {
-      document.title = "Create Account – Worldbuilding DB"
-    })
-    const [newUser, setNewUser] = useState({
-        username: '',
-        email: '',
-        password: '',
-        firstname: '',
-        lastname: '',
-        dob: '',
-        role: ''
-    })
+  const navigate = useNavigate()
+  useEffect(() => {
+    document.title = "Create Account – Worldbuilding DB"
+  })
+  const [newUser, setNewUser] = useState({
+    username: '',
+    email: '',
+    password: '',
+    firstname: '',
+    lastname: '',
+    dob: '',
+    role: ''
+  })
 
   const handleChange = (name, value) => {
     setNewUser({...newUser, [name]:value})
@@ -39,7 +41,6 @@ export default function CreateAccount() {
     }
     try {
       const response = await fetch(postURL, requestParams)
-      const data = await response.json()
       if(response.status === 200 || response.status === 201) {
        // setUsers([...users, data])
         setNewUser({
@@ -51,10 +52,7 @@ export default function CreateAccount() {
           dob:'',
           role: ''
         })
-        localStorage.setItem("authToken", data.accessToken)
-        localStorage.setItem("user", data.user)
-        localStorage.setItem("userRole", data.user_role)
-        window.location.href = '/worlds'; //redirect to worlds on successful account creation
+        navigate('/login'); //redirect to login on successful account creation
       } else {
         alert("An error occurred.")
       }

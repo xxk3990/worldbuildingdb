@@ -64,11 +64,6 @@ fs
     foreignKey: "world_uuid"
   })
 
- 
-
-
-
-
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 

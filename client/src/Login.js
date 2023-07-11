@@ -2,9 +2,11 @@ import logo from './logo.svg';
 import './App.css';
 import React, { useState, useMemo, useEffect}  from 'react';
 import { Snackbar } from '@mui/material';
-//import { useNavigate } from 'react-router-dom';
+import { handleLogin } from './services/auth-service';
+import { useNavigate } from 'react-router-dom';
 export default function Login() {
-  // const navigate = useNavigate()
+  const page = localStorage.getItem("page")
+  const navigate = useNavigate()
   const [login, setLogin] = useState({
       email: '',
       password: ''
@@ -21,13 +23,17 @@ export default function Login() {
   }
 
   const navigateCreateAccount = () => {
-    window.location.href = '/createAccount'
+    navigate('/createAccount')
   }
 
-  const navigateToWorlds = () => {
+  const navigateToRequestedPage = () => {
     setTimeout(() => {
       setOpenSnackbar(false);
-      window.location.href = '/worlds'
+      if(page === null) {
+        navigate('/')
+      } else {
+        navigate(`/${page}`);
+      }
     }, 2000)
   }
   
@@ -37,25 +43,19 @@ export default function Login() {
       email: login.email,
       password: login.password,
     }
-    const requestParams = {
-      method: 'POST',
-      headers: {"Content-Type": 'application/json'},
-      body: JSON.stringify(requestBody)
-    }
     try {
-      const response = await fetch(postURL, requestParams)
+      const response = await handleLogin(postURL, requestBody)
       const data = await response.json()
       if(response.status === 200 || response.status === 201) {
-       //grab access token sent in response, add to local storage
-          localStorage.setItem("authToken", data.accessToken)
+       //grab data in response, add to local storage
           localStorage.setItem("user", data.user);
           localStorage.setItem("userRole", data.user_role)
           setOpenSnackbar(true)
-          navigateToWorlds()
+          navigateToRequestedPage()
       } else if(response.status === 401) {
         alert(`${data.status}`)
       }
-    } catch {
+    } catch{
       alert("An error occurred")
     }
   

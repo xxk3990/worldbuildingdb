@@ -3,13 +3,20 @@ import './styles/users.css';
 import React, { useState, useMemo, useEffect}  from 'react';
 import { useNavigate } from 'react-router-dom';
 import { handleGet } from './services/requests-service';
+import { checkAuth } from './services/auth-service';
 
 export default function Users() {
+  const navigate = useNavigate()
   const [users, setUsers] = useState([]);
-  const fetchUsers = () => {
-    const currentUserToken = localStorage.getItem("authToken")
-    const url = `http://localhost:3000/users`;
-    handleGet(url, currentUserToken, setUsers)
+  const fetchUsers = async () => {
+    const authorized = await checkAuth()
+    if(authorized === false) {
+      localStorage.clear();
+      navigate("/login")
+    } else {
+      const endpoint = `users`;
+      handleGet(endpoint, setUsers)
+    }
   }
   useEffect(() => {
    document.title = "All users – Worldbuilding DB"
