@@ -9,3 +9,13 @@
     flex-direction: column;
     align-items: center;
 }
+
+.logout-info {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.logout-info h4 {
+    margin: 0;
+}

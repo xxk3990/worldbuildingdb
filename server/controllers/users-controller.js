@@ -42,7 +42,7 @@ const login = async (req, res, next) => {
     if (matchingUser.length !== 0) {
         const passwordValid = await bcrypt.compare(req.body.password, matchingUser.password)
         if (passwordValid) {
-            const session = uuidv4();
+            const tokenTime = 1800000 //30 minutes
             const secret = process.env.SECRET; //grab secret
             const token = jwt.sign({
                 id: matchingUser.id,
@@ -52,12 +52,13 @@ const login = async (req, res, next) => {
             }) //set session up
             const requiredUserData = {
                 user: matchingUser.id,
-                user_role: matchingUser.user_role
+                user_role: matchingUser.user_role,
+                token_expires_in: tokenTime
             }
             return res.cookie("token", token, {
                 httpOnly: true,
                 secure: false,
-                maxAge: 1800000, //30 min
+                maxAge: tokenTime, //30 min
             }).status(200).send(requiredUserData)
             
         } else {

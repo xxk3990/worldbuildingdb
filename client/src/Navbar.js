@@ -25,7 +25,7 @@ export default function Navbar() {
                 <Snackbar open={openSnackbar} autoHideDuration={2000} message="Logging Out..." anchorOrigin={{horizontal: "center", vertical:"top"}}/>
                 <section className='nav-loggedin'>
                     <ul className = "nav-links">
-                        <li className='nav-item'><Link to='/worlds'>Worlds</Link></li>
+                        <li className='nav-item'><Link to='/'>Worlds</Link></li>
                         <li className='nav-item'><Link to='/profile'>Profile</Link></li>
                         <li className='nav-item'><Link to='/users'>All Users</Link></li>
                         <li className='nav-item'><Link to='/adminWorlds'>All Worlds</Link></li>
@@ -40,7 +40,7 @@ export default function Navbar() {
                 <Snackbar open={openSnackbar} autoHideDuration={1000} message="Logging Out..." anchorOrigin={{horizontal: "center", vertical:"top"}}/>
                 <section className='nav-loggedin'>
                     <ul className = "nav-links">
-                        <li className='nav-item'><Link to='/worlds'>Worlds</Link></li>
+                        <li className='nav-item'><Link to='/'>Worlds</Link></li>
                         <li className='nav-item'><Link to='/profile'>Profile</Link></li>
                         <li className='nav-item'><button type ="button" className='logout-btn' onClick = {callLogout}>Logout</button></li>
                     </ul>
