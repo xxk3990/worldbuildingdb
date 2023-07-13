@@ -22,6 +22,24 @@ const getAllUsers = async (req, res) => {
 
 }
 
+const getAllWorlds = async (req, res) => {
+    const worlds = await models.World.findAll({
+        include: [{
+            model: models.User,
+            attributes: ["username"],
+            as: "world_owner"
+        }]
+    })
+    if(worlds.length !== 0) {
+        return res.json(worlds);
+    } else {
+        return res.json({
+            "message": "No worlds added yet."
+        })
+    }
+}
+
 module.exports = {
     getAllUsers,
+    getAllWorlds
 }

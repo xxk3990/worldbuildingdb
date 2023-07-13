@@ -63,7 +63,7 @@ export default function Worlds() {
             user: '',
             description:''
           })
-          getWorlds();
+          getWorlds()
           setOpenSnackbar(true);
           setTimeout(() => {
             setOpenSnackbar(false);
@@ -80,6 +80,7 @@ export default function Worlds() {
   if(worlds.message === "No worlds added yet.") {
     return (
       <div className="Worlds">
+        <Snackbar open={openSnackbar} autoHideDuration={1500} message="World Created Successfully!" anchorOrigin={{horizontal: "center", vertical:"top"}}/>
         <h4>No world found.</h4>
         <section className='add-world'>
           <h4>Add a world! Once your main worlds have been set, you can then save locations and/or characters in the world. </h4>
@@ -136,6 +137,7 @@ export default function Worlds() {
 
 
 const WorldCard = (props) => {
+  const navigate = useNavigate()
   const w = props.w;
   const navigateToLocations = () => {
     //first remove any previously set world/world name so user can have multiple worlds
@@ -146,7 +148,7 @@ const WorldCard = (props) => {
     localStorage.setItem("world", w.id)
     localStorage.setItem("worldName", w.world_name);
 
-    window.location.href = '/locations'
+    navigate('/locations')
   }
   return(
     <section className="world-info">

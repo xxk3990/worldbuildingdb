@@ -9,6 +9,7 @@ const router = (app) => {
     app.post('/addUser', users.createAccount)
     app.get('/verify', mid.verifyRequestAuth, mid.verifySession)
     app.get('/users', mid.verifyRequestAuth, admin.getAllUsers)
+    app.get('/allWorlds', mid.verifyRequestAuth, admin.getAllWorlds)
     app.post('/addWorld', mid.verifyRequestAuth, worlds.addWorld)
     app.get('/worlds', mid.verifyRequestAuth, worlds.getWorlds)
     app.get('/profile', mid.verifyRequestAuth, users.userProfile)

@@ -48,12 +48,10 @@ export default function Login() {
       const data = await response.json()
       if(response.status === 200 || response.status === 201) {
        //grab data in response, add to local storage
-        const dt = new Date();
         localStorage.setItem("user", data.user);
         localStorage.setItem("userRole", data.user_role)
         localStorage.setItem("expiration", (data.token_expires_in / 60000))
-        localStorage.setItem("loginHour", `${dt.getHours() - 12}`)
-        localStorage.setItem("loginMinute", `${dt.getMinutes()}`)
+        localStorage.setItem("loginTime", Date.now())
         setOpenSnackbar(true)
         navigateToRequestedPage()
       } else if(response.status === 401) {

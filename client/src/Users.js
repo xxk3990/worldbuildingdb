@@ -21,7 +21,7 @@ export default function Users() {
   useEffect(() => {
    document.title = "All users – Worldbuilding DB"
    fetchUsers();
-  }, [users])
+  }, [])
 
   if(users === undefined) {
     return (
