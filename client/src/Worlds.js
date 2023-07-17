@@ -118,7 +118,7 @@ export default function Worlds() {
                 <option value="Fantasy">Fantasy</option>
               </select>
             </span>
-            <span className='world-form-question'id="first-name">Description: <textarea name='description' className='user-input'value={newWorld.description} onChange={e => handleChange(e.target.name, e.target.value)}></textarea></span>
+            <span className='world-form-question'id="world-description">Description: <textarea name='description' className='user-input'value={newWorld.description} onChange={e => handleChange(e.target.name, e.target.value)}></textarea></span>
             <button type='button' onClick={postWorld}>Submit</button>
         </section>
       </div>

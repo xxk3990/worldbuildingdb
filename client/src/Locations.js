@@ -130,7 +130,7 @@ export default function Locations() {
               </select>
             </span>
             <span className='location-form-question'id="inhabitants">Inhabitants (if any): <textarea name='inhabitants' className='user-input'value={newLocation.inhabitants} onChange={e => handleChange(e.target.name, e.target.value)}></textarea></span>
-            <span className='location-form-question'id="inhabitants">Description: <textarea name='description' className='user-input'value={newLocation.description} onChange={e => handleChange(e.target.name, e.target.value)}></textarea></span>
+            <span className='location-form-question'id="location-description">Description: <textarea name='description' className='user-input'value={newLocation.description} onChange={e => handleChange(e.target.name, e.target.value)}></textarea></span>
             <button type='button' onClick={postLocation}>Submit</button>
         </section>
       </div>

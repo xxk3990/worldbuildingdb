@@ -64,7 +64,7 @@ export default function CreateAccount() {
 
   
     return (
-      <div className="Create Account">
+      <div className="CreateAccount">
         <section className='add-user'>
           <h4>Create Account</h4>
             <span className='user-form-question' id="username">Username: <input type='text' name='username' className='user-input' value={newUser.username} onChange={e => handleChange(e.target.name, e.target.value)}/></span>
