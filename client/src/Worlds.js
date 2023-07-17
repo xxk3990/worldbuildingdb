@@ -77,7 +77,7 @@ export default function Worlds() {
     }
   }
 
-  if(worlds.message === "No worlds added yet.") {
+  if(worlds.length === 0) {
     return (
       <div className="Worlds">
         <Snackbar open={openSnackbar} autoHideDuration={1500} message="World Created Successfully!" anchorOrigin={{horizontal: "center", vertical:"top"}}/>
