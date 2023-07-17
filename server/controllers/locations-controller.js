@@ -15,9 +15,7 @@ const getAllLocations = async (req, res) => {
     if (locations.length !== 0) {
         return res.json(locations);
     } else {
-        return res.json({
-            message: "No locations added yet."
-        })
+        return res.send([]) //send empty response so front end can do if locations === 0
     }
 
 }

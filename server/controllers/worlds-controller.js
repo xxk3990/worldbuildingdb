@@ -11,11 +11,11 @@ const getWorlds = async (req, res) => {
             as: "world_owner"
         }]
     })
-    //test out doing if(users.length !== 0) instead, could be a stronger check
+
     if(worlds.length !== 0) {
         return res.json(worlds)
     } else {
-        return res.json({"message": "No worlds added yet."})
+        return res.send([]) //send empty response so front-end can check if worlds.length === 0
     }
 }
 
@@ -30,7 +30,7 @@ const addWorld = async (req, res) => {
         world_type: req.body.world_type,
         description: req.body.description
     }
-    res.status(201).send({status: 'success!'})
+    res.status(201).send({"message": 'success!'})
     return models.World.create(newWorld);
 }
 

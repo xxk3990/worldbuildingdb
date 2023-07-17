@@ -81,7 +81,7 @@ export default function Locations() {
       }
     }
   }
-  if(locations.message === "No locations added yet.") {
+  if(locations.length === 0) {
     return (
       <div className="Locations">
         <Snackbar open={openSnackbar} autoHideDuration={1500} message="Location Added Successfully!" anchorOrigin={{horizontal: "center", vertical:"top"}}/>
