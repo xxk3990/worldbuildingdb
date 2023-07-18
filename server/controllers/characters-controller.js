@@ -14,7 +14,7 @@ const getCharacters = async (req, res) => {
     if(characters.length !== 0) {
         return res.json(characters)
     } else {
-        return res.send([]) //send empty response so front-end can check if worlds.length === 0
+        return res.send([]) //send empty response so front-end can check if characters.length === 0
     }
 }
 
