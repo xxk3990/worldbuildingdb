@@ -4,7 +4,7 @@ const {
 } = require('uuid')
 const getAllLocations = async (req, res) => {
 
-    const locations = await models.Location.findAll({where: {'world_uuid' : req.query.worldID}, raw:true},
+    const locations = await models.Location.findAll({where: {'world_uuid' : req.query.world}, raw:true},
         {
         include: [{
             model: models.World,
@@ -22,8 +22,8 @@ const getAllLocations = async (req, res) => {
 
 const addLocation = async (req, res) => {
     const world = await models.World.findAll({where: {'id' : req.body.world}, raw: true})
-    const newWorld = {
-        //id, user_uuid, world_name, world_type, description
+    const newLocation = {
+        //id, world_uuid, location_name, location_type, inhabitants, description
         id: uuidv4(),
         world_uuid: world[0].id,
         location_name: req.body.location_name,
@@ -32,7 +32,7 @@ const addLocation = async (req, res) => {
         description: req.body.description
     }
     res.status(201).send({status: 'success!'})
-    return models.Location.create(newWorld);
+    return models.Location.create(newLocation);
 }
 
 module.exports = {

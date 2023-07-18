@@ -20,13 +20,13 @@ export default function Locations() {
   const worldName = localStorage.getItem("worldName")
   const currentWorld = localStorage.getItem("world")
   const currentUser = localStorage.getItem("user");
-  const getLocations = async () => { //get worlds method
+  const getLocations = async () => { //get locations method
     const authorized = await checkAuth()
     if(authorized === false) {
       localStorage.clear();
       navigate('/login');
     } else {
-      const endpoint = `locations?worldID=${currentWorld}&id=${currentUser}`; //get data unique to the current world id
+      const endpoint = `locations?world=${currentWorld}&id=${currentUser}`; //get data unique to the current world id
       handleGet(endpoint, setLocations)
     }
     
@@ -109,7 +109,7 @@ export default function Locations() {
   } else {
     return (
       <div className="Locations">
-        <Snackbar open={openSnackbar} autoHideDuration={1500} message="Location Added Successfully! Reloading..." anchorOrigin={{horizontal: "center", vertical:"top"}}/>
+        <Snackbar open={openSnackbar} autoHideDuration={1500} message="Location Added Successfully!" anchorOrigin={{horizontal: "center", vertical:"top"}}/>
         <h1 className='location-title'>Add or View locations in {worldName}</h1>
         <section className = "locations-grid">
             {locations.map(loc => {

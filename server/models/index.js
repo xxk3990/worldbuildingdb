@@ -11,7 +11,8 @@ const db = {};
 const { userModel } = require('./user');
 const {worldModel} = require('./world');
 const {locationModel} = require('./location')
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
+const { characterModel } = require('./character');
 
 const sequelize = new Sequelize(config.database, config.username, config.password, {
   dialect: 'postgres',
@@ -21,7 +22,8 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
 const models = {
   User: userModel(sequelize, Sequelize.DataTypes),
   World: worldModel(sequelize, Sequelize.DataTypes),
-  Location: locationModel(sequelize, Sequelize.DataTypes)
+  Location: locationModel(sequelize, Sequelize.DataTypes),
+  Character: characterModel(sequelize, Sequelize.DataTypes)
 }
 
 fs
@@ -63,6 +65,28 @@ fs
     as: "exists_in",
     foreignKey: "world_uuid"
   })
+
+  models.World.hasMany(models.Character, {
+    as: "characters",
+    foreignKey: "world_uuid"
+  })
+
+  models.Location.hasMany(models.Character, {
+    as: "characters",
+    foreignKey: "location_uuid"
+  })
+
+  models.Character.belongsTo(models.World, {
+    as: "exists_in",
+    foreignKey: "world_uuid"
+  })
+
+  models.Character.belongsTo(models.Location, {
+    as: "location",
+    foreignKey: "location_uuid"
+  })
+
+
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

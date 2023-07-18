@@ -150,12 +150,23 @@ const WorldCard = (props) => {
 
     navigate('/locations')
   }
+  const navigateToCharacters = () => {
+    //first remove any previously set world/world name so user can have multiple worlds
+    localStorage.removeItem("world")
+    localStorage.removeItem("worldName");
+    
+    //then add current
+    localStorage.setItem("world", w.id)
+    localStorage.setItem("worldName", w.world_name);
+    navigate('/characters')
+  }
   return(
     <section className="world-info">
       <h3 id="worldname">{w.world_name}</h3>
       <p>{w.world_type}</p>
       <p>{w.description}</p>
       <button type="button" className='toLocations' onClick={navigateToLocations}>Locations</button>
+      <button type="button" className='toCharacters' onClick={navigateToCharacters}>Characters</button>
     </section>
   )
 }
