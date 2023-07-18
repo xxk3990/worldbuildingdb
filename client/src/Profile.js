@@ -7,7 +7,6 @@ import { handleGet } from './services/requests-service';
 import { checkAuth } from './services/auth-service';
 import { handleLogout } from './services/auth-service';
 export default function Profile() {
-    localStorage.setItem("page", "profile")
     const [userProfile, setUserProfile] = useState([]);
     const navigate = useNavigate()
     const expiration = localStorage.getItem("expiration")
@@ -39,7 +38,8 @@ export default function Profile() {
     const getProfile = async () => {
         const authorized = await checkAuth()
         if(authorized === false) {
-            localStorage.clear();
+            localStorage.clear(); //delete all the important stuff
+            sessionStorage.setItem("page", "profile") //temporarily save requested page
             navigate('/login')
         } else {
             const endpoint = `profile?id=${currentUserID}`; //get data unique to the current user id

@@ -6,7 +6,6 @@ import { Snackbar } from '@mui/material';
 import { handleGet, handlePost } from './services/requests-service';
 import { checkAuth } from './services/auth-service';
 export default function Locations() {
-  localStorage.setItem("page", "locations");
   const navigate = useNavigate()
   const [newLocation, setNewLocation] = useState({
     locationName: '',
@@ -24,6 +23,7 @@ export default function Locations() {
     const authorized = await checkAuth()
     if(authorized === false) {
       localStorage.clear();
+      sessionStorage.setItem("page", "") //requested page has to be worlds because locations and chars require world info
       navigate('/login');
     } else {
       const endpoint = `locations?world=${currentWorld}&id=${currentUser}`; //get data unique to the current world id
