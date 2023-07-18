@@ -5,7 +5,7 @@ import { Snackbar } from '@mui/material';
 import { handleLogin } from './services/auth-service';
 import { useNavigate } from 'react-router-dom';
 export default function Login() {
-  const page = localStorage.getItem("page")
+  const page = sessionStorage.getItem("page")
   const navigate = useNavigate()
   const [login, setLogin] = useState({
       email: '',

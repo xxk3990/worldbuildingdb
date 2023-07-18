@@ -7,7 +7,6 @@ import { handleGet, handlePost } from './services/requests-service';
 import { checkAuth } from "./services/auth-service";
 export default function Worlds() {
   const navigate = useNavigate()
-  localStorage.setItem("page", "");
   const [newWorld, setNewWorld] = useState({
     worldName: '',
     worldType: '',
@@ -22,6 +21,7 @@ export default function Worlds() {
     console.log("Authorization status:", authorized);
     if(authorized === false) {
       localStorage.clear();
+      sessionStorage.setItem("page", "") //temporarily save requested page
       navigate('/login');
     } else {
       const endpoint = `worlds?id=${currentUserID}`; //get data unique to the current user id

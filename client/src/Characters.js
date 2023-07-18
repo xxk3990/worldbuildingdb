@@ -25,7 +25,8 @@ export default function Characters() {
   const getCharacters = async () => { //get characters method
     const authorized = await checkAuth()
     if(authorized === false) {
-      localStorage.clear();
+      localStorage.clear(); //clear everything
+      sessionStorage.setItem("page", "characters") //temporarily save requested page
       navigate('/login');
     } else {
       const endpoint = `characters?world=${currentWorld}&id=${currentUser}`; //get data unique to the current world id
@@ -35,7 +36,8 @@ export default function Characters() {
   const getLocationsForCharacter = async () => {
     const authorized = await checkAuth()
     if(authorized === false) {
-      localStorage.clear();
+      localStorage.clear(); //remove everything
+      localStorage.setItem('page', 'characters') //but keep track of requested page
       navigate('/login');
     } else {
       const endpoint = `locations?world=${currentWorld}&id=${currentUser}`; //get data unique to the current world id
@@ -45,7 +47,8 @@ export default function Characters() {
   useEffect(() => {
     document.title = "Characters – Worldbuilding DB"
     getCharacters();
-    getLocationsForCharacter(); //this is so the user can choose from a list of existing locations when selecting a character's homeworld
+    //this is so the user can choose from a list of locations when selecting a character's home location
+    getLocationsForCharacter(); 
     console.log(characters);
   }, [])
   
@@ -198,14 +201,6 @@ export default function Characters() {
     }
 
   }
-
- 
-  
-  
- 
-
-  
-
 }
 
 const CharacterCard = (props) => {
