@@ -13,6 +13,7 @@ import Profile from './Profile';
 import AdminWorlds from './AdminWorlds';
 import Users from './Users';
 import Locations from './Locations';
+import Characters from './Characters';
 
 export default function App() {
   useEffect(() => {
@@ -27,6 +28,7 @@ export default function App() {
         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="/" element={<ProtectedRoute><Worlds /></ProtectedRoute>} />
         <Route path="/locations" element={<ProtectedRoute><Locations /></ProtectedRoute>} />
+        <Route path="/characters" element={<ProtectedRoute><Characters /></ProtectedRoute>} />
         <Route path="/adminWorlds" element={<ProtectedRoute><AdminRoute><AdminWorlds /></AdminRoute></ProtectedRoute>} />
         <Route path="/users" element={<ProtectedRoute><AdminRoute><Users /></AdminRoute></ProtectedRoute>} />
       </Route>
