@@ -26,7 +26,7 @@ export default function Characters() {
     const authorized = await checkAuth()
     if(authorized === false) {
       localStorage.clear(); //clear everything
-      sessionStorage.setItem("page", "characters") //temporarily save requested page
+      sessionStorage.setItem("page", "") //requested page has to be worlds because locations and chars require world info
       navigate('/login');
     } else {
       const endpoint = `characters?world=${currentWorld}&id=${currentUser}`; //get data unique to the current world id
