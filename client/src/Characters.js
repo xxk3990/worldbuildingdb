@@ -37,7 +37,7 @@ export default function Characters() {
     const authorized = await checkAuth()
     if(authorized === false) {
       localStorage.clear(); //remove everything
-      localStorage.setItem('page', 'characters') //but keep track of requested page
+      sessionStorage.setItem('page', '') //but keep track of requested page
       navigate('/login');
     } else {
       const endpoint = `locations?world=${currentWorld}&id=${currentUser}`; //get data unique to the current world id
@@ -47,7 +47,7 @@ export default function Characters() {
   useEffect(() => {
     document.title = "Characters – Worldbuilding DB"
     getCharacters();
-    //this is so the user can choose from a list of locations when selecting a character's home location
+    //this is so the user can choose from already created locations when selecting a character's home location
     getLocationsForCharacter(); 
     console.log(characters);
   }, [])
