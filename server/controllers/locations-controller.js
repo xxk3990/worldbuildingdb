@@ -35,7 +35,13 @@ const addLocation = async (req, res) => {
     return models.Location.create(newLocation);
 }
 
+const deleteLocation = async (req, res) => {
+    res.status(200).send({"message": "Success!"})
+    return models.Location.destroy({where: {'id':req.query.location}})
+}
+
 module.exports = {
     getAllLocations, 
-    addLocation
+    addLocation,
+    deleteLocation
 }

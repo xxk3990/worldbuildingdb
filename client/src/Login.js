@@ -1,5 +1,5 @@
 import logo from './logo.svg';
-import './App.css';
+import './styles/login.css';
 import React, { useState, useMemo, useEffect}  from 'react';
 import { Snackbar } from '@mui/material';
 import { handleLogin } from './services/auth-service';
@@ -68,12 +68,12 @@ export default function Login() {
     <div className="Login">
      <Snackbar open={openSnackbar} autoHideDuration={2000} message="Login Successful!" anchorOrigin={{horizontal: "center", vertical:"top"}}/>
       <section className='user-login'>
-        <h4>Login</h4>
+        <h1>Login – Worldbuilding DB</h1>
           <span className='login-form-question' id="email">Email: <input type='email' name='email' className='email-input'value={login.email} onChange={e => handleChange(e.target.name, e.target.value)}/></span>
           <span className='login-form-question'id="password">Password: <input type='password' name='password' className='password-input'value={login.password} onChange={e => handleChange(e.target.name, e.target.value)}/></span>
-          <button type='button' onClick={submitLogin}>Submit</button>
+          <button className="login-submit-btn" type='button' onClick={submitLogin}>Submit</button>
       </section>
-      <span>New User? Create Account<button type='button' onClick={navigateCreateAccount}>Create Account</button></span>
+      <span>New User? Create Account<button className='create-account-btn' type='button' onClick={navigateCreateAccount}>Create Account</button></span>
     </div>
   );
   

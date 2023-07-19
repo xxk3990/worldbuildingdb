@@ -10,9 +10,7 @@ const getAllUsers = async (req, res) => {
             as: "worlds_created"
         }],
     })
-    //include find
-    //test out doing if(users.length !== 0) instead, could be a stronger check
-    if (users !== undefined) { 
+    if (users.length !== 0) { 
         return res.json(users);
     } else {
         return res.json({

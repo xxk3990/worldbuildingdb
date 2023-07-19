@@ -37,7 +37,13 @@ const addCharacter = async (req, res) => {
     return models.Character.create(newCharacter);
 }
 
+const deleteCharacter = async (req, res) => {
+    res.status(200).send({"message": "Success!"})
+    return models.Character.destroy({where: {'id':req.query.character}})
+}
+
 module.exports = {
     getCharacters,
-    addCharacter
+    addCharacter,
+    deleteCharacter
 }

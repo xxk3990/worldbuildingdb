@@ -3,7 +3,7 @@ import './styles/locations.css'
 import React, { useState, useMemo, useEffect}  from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Snackbar } from '@mui/material';
-import { handleGet, handlePost } from './services/requests-service';
+import { handleGet, handlePost, handleDelete } from './services/requests-service';
 import { checkAuth } from './services/auth-service';
 export default function Locations() {
   const navigate = useNavigate()
@@ -113,7 +113,7 @@ export default function Locations() {
         <h1 className='location-title'>Add or View locations in {worldName}</h1>
         <section className = "locations-grid">
             {locations.map(loc => {
-              return <LocationCard loc={loc}/>
+              return <LocationCard loc={loc} refreshLocations={getLocations}/>
             })}
           </section>
         <section className='add-location'>
@@ -136,24 +136,44 @@ export default function Locations() {
       </div>
     );
   }
-
- 
-  
-  
- 
-
-  
-
 }
 
 const LocationCard = (props) => {
+  const navigate = useNavigate()
   const loc = props.loc;
+  const refreshLocations = props.refreshLocations;
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const deleteLocation = async () => {
+    const authorized = checkAuth()
+    if(authorized === false) {
+      localStorage.clear();
+      navigate('/');
+    } else {
+      const endpoint = `deleteLocation?location=${loc.id}`
+      try {
+        const response = await handleDelete(endpoint)
+        if(response.status === 200 || response.status === 201) {
+          setOpenSnackbar(true);
+          setTimeout(() => {
+            refreshLocations();
+            setOpenSnackbar(false);
+          }, 1500)
+        } else {
+          alert("An error occurred.")
+        }
+      } catch {
+        alert("An error occurred while deleting this location.")
+      }
+    }
+  }
   return(
     <section className="location-info">
+      <Snackbar open={openSnackbar} autoHideDuration={1500} message="Deleting Location..." anchorOrigin={{horizontal: "center", vertical:"top"}}/>
       <h3 id="locationname">Name: {loc.location_name}</h3>
       <p>Type: {loc.location_type}</p>
       <p>Inhabitants: {loc.inhabitants}</p>
       <p>Description <br/>{loc.description}</p>
+      <button type="button" className='delete-location-btn' onClick={deleteLocation}>Delete</button>
     </section>
   )
 }

@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import "./styles/home-loggedOut.css"
 export default function HomeLoggedOut() {
     const navigate = useNavigate();
     const login = () => {

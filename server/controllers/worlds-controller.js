@@ -30,8 +30,15 @@ const addWorld = async (req, res) => {
         world_type: req.body.world_type,
         description: req.body.description
     }
-    res.status(201).send({"message": 'success!'})
+    res.status(201).send({"message": 'success!'});
     return models.World.create(newWorld);
 }
 
-module.exports = {getWorlds, addWorld}
+const deleteWorld = async (req, res) => {
+    res.status(200).send({"message": "Success!"});
+    models.Location.destroy({where: {'world_uuid': req.query.world}});
+    models.Character.destroy({where: {"world_uuid": req.query.world}});
+    return models.World.destroy({where: {'id':req.query.world}});
+}
+
+module.exports = {getWorlds, addWorld, deleteWorld}
