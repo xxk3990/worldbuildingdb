@@ -3,7 +3,7 @@ import './styles/worlds.css'
 import React, { useState, useMemo, useEffect}  from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Snackbar } from '@mui/material';
-import { handleGet, handlePost } from './services/requests-service';
+import { handleDelete, handleGet, handlePost } from './services/requests-service';
 import { checkAuth } from "./services/auth-service";
 export default function Worlds() {
   const navigate = useNavigate()
@@ -104,7 +104,7 @@ export default function Worlds() {
         <Snackbar open={openSnackbar} autoHideDuration={1500} message="World Created Successfully!" anchorOrigin={{horizontal: "center", vertical:"top"}}/>
         <section className = "worlds-grid">
             {worlds.map(w => {
-              return <WorldCard w={w}/>
+              return <WorldCard w={w} refreshWorlds={getWorlds}/>
             })}
           </section>
         <section className='add-world'>
@@ -124,14 +124,6 @@ export default function Worlds() {
       </div>
     );
   }
-
- 
-  
-  
- 
-
-  
-
 }
 
 
@@ -139,6 +131,8 @@ export default function Worlds() {
 const WorldCard = (props) => {
   const navigate = useNavigate()
   const w = props.w;
+  const refreshWorlds = props.refreshWorlds;
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   const navigateToLocations = () => {
     //first remove any previously set world/world name so user can have multiple worlds
     localStorage.removeItem("world")
@@ -160,13 +154,40 @@ const WorldCard = (props) => {
     localStorage.setItem("worldName", w.world_name);
     navigate('/characters')
   }
+  const deleteWorld = async() => {
+    const authorized = checkAuth()
+    if(authorized === false) {
+      localStorage.clear();
+      navigate('/');
+    } else {
+      localStorage.removeItem("world")
+      localStorage.removeItem("worldName");
+      const endpoint = `deleteWorld?world=${w.id}`
+      try {
+        const response = await handleDelete(endpoint)
+        if(response.status === 200 || response.status === 201) {
+          setOpenSnackbar(true);
+          setTimeout(() => {
+            refreshWorlds();
+            setOpenSnackbar(false);
+          }, 1500)
+        } else {
+          alert("An error occurred.")
+        }
+      } catch {
+        alert("An error occurred while deleting this world.")
+      }
+    }
+  }
   return(
     <section className="world-info">
+      <Snackbar open={openSnackbar} autoHideDuration={1500} message="Deleting World..." anchorOrigin={{horizontal: "center", vertical:"top"}}/>
       <h3 id="worldname">{w.world_name}</h3>
       <p>{w.world_type}</p>
       <p>{w.description}</p>
       <button type="button" className='toLocations' onClick={navigateToLocations}>Locations</button>
       <button type="button" className='toCharacters' onClick={navigateToCharacters}>Characters</button>
+      <button type="button" className='delete-world-btn' onClick={deleteWorld}>Delete</button>
     </section>
   )
 }

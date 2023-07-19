@@ -11,13 +11,16 @@ const router = (app) => {
     app.get('/verify', mid.verifyRequestAuth, mid.verifySession)
     app.get('/users', mid.verifyRequestAuth, admin.getAllUsers)
     app.get('/allWorlds', mid.verifyRequestAuth, admin.getAllWorlds)
-    app.post('/addWorld', mid.verifyRequestAuth, worlds.addWorld)
     app.get('/worlds', mid.verifyRequestAuth, worlds.getWorlds)
+    app.post('/addWorld', mid.verifyRequestAuth, worlds.addWorld)
+    app.delete('/deleteWorld', mid.verifyRequestAuth, worlds.deleteWorld)
     app.get('/profile', mid.verifyRequestAuth, users.userProfile)
     app.get('/locations', mid.verifyRequestAuth, locs.getAllLocations)
     app.post('/addLocation', mid.verifyRequestAuth, locs.addLocation)
+    app.delete('/deleteLocation', mid.verifyRequestAuth, locs.deleteLocation)
     app.get("/characters", mid.verifyRequestAuth, chars.getCharacters)
     app.post("/addCharacter", mid.verifyRequestAuth, chars.addCharacter)
+    app.delete("/deleteCharacter", mid.verifyRequestAuth, chars.deleteCharacter)
     app.post('/logout', mid.verifyRequestAuth, users.logout)
 }
 

@@ -34,4 +34,9 @@ const addWorld = async (req, res) => {
     return models.World.create(newWorld);
 }
 
-module.exports = {getWorlds, addWorld}
+const deleteWorld = async (req, res) => {
+    res.status(200).send({"message": "Success!"})
+    return models.World.destroy({where: {'id':req.query.world}})
+}
+
+module.exports = {getWorlds, addWorld, deleteWorld}

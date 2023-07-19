@@ -3,10 +3,9 @@ import './styles/characters.css'
 import React, { useState, useMemo, useEffect}  from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Snackbar } from '@mui/material';
-import { handleGet, handlePost } from './services/requests-service';
+import { handleGet, handlePost, handleDelete } from './services/requests-service';
 import { checkAuth } from './services/auth-service';
 export default function Characters() {
-  localStorage.setItem("page", "characters");
   const navigate = useNavigate()
   const [newCharacter, setNewCharacter] = useState({
     fullName: '',
@@ -154,7 +153,7 @@ export default function Characters() {
           <h1 className='character-title'>Add or View Characters in {worldName}</h1>
           <section className = "character-grid">
               {characters.map(chr => {
-                return <CharacterCard chr={chr}/>
+                return <CharacterCard chr={chr} refreshCharacters={getCharacters}/>
               })}
             </section>
             <section className='add-character'>
@@ -204,15 +203,43 @@ export default function Characters() {
 }
 
 const CharacterCard = (props) => {
+  const navigate = useNavigate();
   const chr = props.chr;
+  const refreshCharacters = props.refreshCharacters;
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const deleteCharacter = async () => {
+    const authorized = checkAuth()
+    if(authorized === false) {
+      localStorage.clear();
+      navigate('/');
+    } else {
+      const endpoint = `deleteCharacter?character=${chr.id}`
+      try {
+        const response = await handleDelete(endpoint)
+        if(response.status === 200 || response.status === 201) {
+          setOpenSnackbar(true);
+          setTimeout(() => {
+            refreshCharacters();
+            setOpenSnackbar(false);
+          }, 1500)
+        } else {
+          alert("An error occurred.")
+        }
+      } catch {
+        alert("An error occurred while deleting this Character.")
+      }
+    }
+  }
   return(
     <section className="character-info">
+      <Snackbar open={openSnackbar} autoHideDuration={1500} message="Deleting Character..." anchorOrigin={{horizontal: "center", vertical:"top"}}/>
       <h3 id="character-name">Name: {chr.full_name}</h3>
       <p>Species: {chr.character_species}</p>
       <p>Class: {chr.character_class}</p>
       <p>Originally from: {chr.originally_from}</p>
       <p>Abilities: <br/>{chr.abilities}</p>
       <p>Bio: <br/>{chr.biography}</p>
+      <button type="button" className='delete-character-btn' onClick={deleteCharacter}>Delete</button>
     </section>
   )
 }
