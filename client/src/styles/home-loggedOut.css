@@ -2,4 +2,25 @@
 
 .HomeLoggedOut {
     font-family: 'Noto Sans', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    background: #054b93;
+    height: 100vh;
+}
+
+.links {
+    display: flex;
+    justify-content: space-evenly;
+}
+.links li {
+    padding: 20px;
+}
+
+.links li button {
+    width: 200px;
+    height: 50px;
+    font-size: 22px;
+    cursor: pointer;
 }

@@ -101,14 +101,17 @@ export default function Worlds() {
   } else {
     return (
       <div className="Worlds">
+        <h1>Your Worlds</h1>
         <Snackbar open={openSnackbar} autoHideDuration={1500} message="World Created Successfully!" anchorOrigin={{horizontal: "center", vertical:"top"}}/>
+        <h4>Note: deleting a world will also delete its locations and characters.</h4>
         <section className = "worlds-grid">
+          
             {worlds.map(w => {
               return <WorldCard w={w} refreshWorlds={getWorlds}/>
             })}
           </section>
         <section className='add-world'>
-          <h4>Add a world! Once your main worlds have been set, you can then save locations and/or characters in the world. </h4>
+          <h4>Add another world! </h4>
             <span className='world-form-question' id="worldname">World Name: <input type='text' name='worldName' className='user-input' value={newWorld.worldName} onChange={e => handleChange(e.target.name, e.target.value)}/></span>
             <span className='world-form-question' id="worldtype">
               World Type: 
