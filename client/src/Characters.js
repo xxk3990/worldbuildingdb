@@ -175,7 +175,7 @@ export default function Characters() {
           <h1 className='character-title'>Add or View Characters in {worldName}</h1>
           <section className = "characters-grid">
               {characters.map(chr => {
-                return <CharacterCard chr={chr}/>
+                return <CharacterCard chr={chr} refreshCharacters={getCharacters}/>
               })}
             </section>
             <section className='add-character'>
