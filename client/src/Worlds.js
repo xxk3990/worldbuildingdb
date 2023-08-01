@@ -5,9 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { Snackbar } from '@mui/material';
 import { handleDelete, handleGet, handlePost } from './services/requests-service';
 import { checkAuth, handleLogout } from "./services/auth-service";
-import { minutesRemaining } from './services/session-service';
+import { sessionInterval, minsTillLogout } from './services/session-service';
 export default function Worlds() {
-  const [minutes, setMinutes] = useState(minutesRemaining(Date.now()));
+  const [minutes, setMinutes] = useState(minsTillLogout(Date.now()));
   const navigate = useNavigate()
   const [newWorld, setNewWorld] = useState({
     worldName: '',
@@ -20,7 +20,6 @@ export default function Worlds() {
   const currentUserID = localStorage.getItem("user")
   const getWorlds = async () => {
     const authorized = await checkAuth();
-    console.log("Authorization status:", authorized);
     if(authorized === false) {
       localStorage.clear();
       sessionStorage.setItem("page", "") //temporarily save requested page
@@ -36,18 +35,9 @@ export default function Worlds() {
     document.title = "Worlds – Worldbuilding DB"
     getWorlds()
   }, [])
-
   useEffect(() => {
-    const interval = setInterval(() => {
-      const decrease = minutes - 1;
-      setMinutes(decrease)
-    }, 60000) //every minute, reduce # of minutes left by 1
-    if(minutes === 0) {
-      console.log("clear interval condition reached");
-      clearInterval(interval)
-      handleLogout()
-      navigate("/login");
-    }
+    clearInterval(window.interval) //clear active interval from previous page to avoid issues
+    sessionInterval(minutes, setMinutes); //set new one with current # of mins till logout
   }, [minutes])
   
   const handleChange = (name, value) => {
@@ -121,7 +111,6 @@ export default function Worlds() {
         <Snackbar open={openSnackbar} autoHideDuration={1500} message="World Created Successfully!" anchorOrigin={{horizontal: "center", vertical:"top"}}/>
         <h4>Note: deleting a world will also delete its locations and characters.</h4>
         <section className = "worlds-grid">
-          
             {worlds.map(w => {
               return <WorldCard w={w} refreshWorlds={getWorlds}/>
             })}

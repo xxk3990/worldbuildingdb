@@ -4,11 +4,11 @@ import React, { useState, useEffect}  from 'react';
 import "./styles/admin-worlds.css"
 import { useNavigate } from 'react-router-dom';
 import { handleGet } from './services/requests-service';
-import { checkAuth, handleLogout } from './services/auth-service';
-import { minutesRemaining } from './services/session-service';
+import { checkAuth } from './services/auth-service';
+import { minsTillLogout, sessionInterval } from './services/session-service';
 
 export default function AdminWorlds() {
-  const [minutes, setMinutes] = useState(minutesRemaining(Date.now()));
+  const [minutes, setMinutes] = useState(minsTillLogout(Date.now()));
   const navigate = useNavigate()
   const [adminWorlds, setAdminWorlds] = useState([]);
   const fetchAllWorlds = async () => {
@@ -27,16 +27,8 @@ export default function AdminWorlds() {
   }, [])
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const decrease = minutes - 1;
-      setMinutes(decrease)
-    }, 60000) //every minute, reduce # of minutes left by 1
-    if(minutes === 0) {
-      console.log("clear interval condition reached");
-      clearInterval(interval)
-      handleLogout()
-      navigate("/login");
-    }
+    clearInterval(window.interval) //clear interval from previous page to avoid issues
+    sessionInterval(minutes, setMinutes) //set new one with current # of mins till logout
   }, [minutes])
 
   if(adminWorlds.length === 0) {
