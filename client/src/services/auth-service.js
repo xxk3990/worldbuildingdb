@@ -51,7 +51,6 @@ export const checkAuth = async () => {
     credentials: "include"
   })
   const result = await response.json();
-  console.log('auth result: ', result)
   if(result.authenticated === true) {
     return true;
   } else {

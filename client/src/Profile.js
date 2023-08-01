@@ -5,25 +5,16 @@ import "./styles/profile.css"
 import { useNavigate } from 'react-router-dom';
 import { handleGet } from './services/requests-service';
 import { checkAuth } from './services/auth-service';
-import { handleLogout } from './services/auth-service';
-import { minutesRemaining } from './services/session-service';
+import { minsTillLogout, sessionInterval } from './services/session-service';
 export default function Profile() {
     const [userProfile, setUserProfile] = useState([]);
     const navigate = useNavigate()
     const expiration = localStorage.getItem("expiration")
-    const [minutes, setMinutes] = useState(minutesRemaining(Date.now()));
+    const [minutes, setMinutes] = useState(minsTillLogout(Date.now()));
     useEffect(() => {
         document.title = "Profile – Worldbuilding DB"
-        const interval = setInterval(() => {
-            const decrease = minutes - 1;
-            setMinutes(decrease)
-        }, 60000) //every minute, reduce # of minutes left by 1
-        if(minutes === 0) {
-            console.log("clear interval condition reached");
-            clearInterval(interval)
-            handleLogout()
-            navigate("/login");
-        }
+        clearInterval(window.interval) //clear active interval from previous page to avoid issues
+        sessionInterval(minutes, setMinutes); //set new one with current # of mins till logout
     }, [minutes])
 
     const currentUserID = localStorage.getItem("user")
