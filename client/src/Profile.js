@@ -6,19 +6,12 @@ import { useNavigate } from 'react-router-dom';
 import { handleGet } from './services/requests-service';
 import { checkAuth } from './services/auth-service';
 import { handleLogout } from './services/auth-service';
+import { minutesRemaining } from './services/session-service';
 export default function Profile() {
     const [userProfile, setUserProfile] = useState([]);
     const navigate = useNavigate()
     const expiration = localStorage.getItem("expiration")
-    const loginTime = localStorage.getItem("loginTime")
-
-    const minutesRemaining = (now) => {
-        const timeSinceLogin = now - loginTime; //get milliseconds since user logged in
-        const minutesSince = timeSinceLogin / 60000; //convert it to minutes
-        const minsLeft = expiration - minutesSince; //subtract # of minutes logged in from token exp time
-        return Math.round(minsLeft); //round off decimals
-    }
-    const [minutes, setMinutes] = useState(minutesRemaining(Date.now()))
+    const [minutes, setMinutes] = useState(minutesRemaining(Date.now()));
     useEffect(() => {
         document.title = "Profile – Worldbuilding DB"
         const interval = setInterval(() => {

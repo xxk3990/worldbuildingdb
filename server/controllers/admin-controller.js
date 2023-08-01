@@ -31,9 +31,7 @@ const getAllWorlds = async (req, res) => {
     if(worlds.length !== 0) {
         return res.json(worlds);
     } else {
-        return res.json({
-            "message": "No worlds added yet."
-        })
+        return res.send([]) //send empty response so front-end can check if adminWorlds.length === 0
     }
 }
 

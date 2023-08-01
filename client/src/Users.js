@@ -3,9 +3,11 @@ import './styles/users.css';
 import React, { useState, useMemo, useEffect}  from 'react';
 import { useNavigate } from 'react-router-dom';
 import { handleGet } from './services/requests-service';
-import { checkAuth } from './services/auth-service';
+import { checkAuth, handleLogout } from './services/auth-service';
+import { minutesRemaining } from './services/session-service';
 
 export default function Users() {
+  const [minutes, setMinutes] = useState(minutesRemaining(Date.now()));
   const navigate = useNavigate()
   const [users, setUsers] = useState([]);
   const fetchUsers = async () => {
@@ -22,6 +24,18 @@ export default function Users() {
    document.title = "All users – Worldbuilding DB"
    fetchUsers();
   }, [])
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const decrease = minutes - 1;
+      setMinutes(decrease)
+    }, 60000) //every minute, reduce # of minutes left by 1
+    if(minutes === 0) {
+      console.log("clear interval condition reached");
+      clearInterval(interval)
+      handleLogout()
+      navigate("/login");
+    }
+  }, [minutes])
 
   if(users === undefined) {
     return (
