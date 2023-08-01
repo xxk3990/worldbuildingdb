@@ -4,9 +4,11 @@ import React, { useState, useMemo, useEffect}  from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Snackbar } from '@mui/material';
 import { handleGet, handlePost, handleDelete } from './services/requests-service';
-import { checkAuth } from './services/auth-service';
+import { checkAuth, handleLogout } from './services/auth-service';
+import { minutesRemaining } from './services/session-service';
 export default function Characters() {
   const navigate = useNavigate()
+  const [minutes, setMinutes] = useState(minutesRemaining(Date.now()));
   const [newCharacter, setNewCharacter] = useState({
     fullName: '',
     characterSpecies: '',
@@ -50,6 +52,19 @@ export default function Characters() {
     getLocationsForCharacter(); 
     console.log(characters);
   }, [])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const decrease = minutes - 1;
+      setMinutes(decrease)
+    }, 60000) //every minute, reduce # of minutes left by 1
+    if(minutes === 0) {
+      console.log("clear interval condition reached");
+      clearInterval(interval)
+      handleLogout()
+      navigate("/login");
+    }
+  }, [minutes])
   
   const handleChange = (name, value) => {
     setNewCharacter({...newCharacter, [name]:value})

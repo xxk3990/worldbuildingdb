@@ -1,4 +1,3 @@
-import jwt_decode from "jwt-decode";
 import { useState } from "react";
 
 export const useLocalStorage = (keyName) => {

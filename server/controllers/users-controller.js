@@ -74,6 +74,28 @@ const login = async (req, res, next) => {
     }
 }
 
+// const refreshToken = async(req, res) => {
+//     const matchingUser = await models.User.findOne({
+//         where: {
+//             'id': req.body.id,
+//         },
+//         raw: true
+//     })
+//     res.clearCookie("token", {
+//         httpOnly: true,
+//         secure: false
+//     })
+//     const refreshSecret = process.env.REFRESH_SECRET;
+//     const refreshToken = jwt.sign({
+//         id: matchingUser.id,
+//     }, refreshSecret, {
+//         algorithm: "HS256",
+//         expiresIn: "30 minutes",
+//     }) //set session up
+
+//     return res.cookie("token", )
+// }
+
 const logout = async (req, res) => {
     return res.status(200).clearCookie("token", {
         httpOnly: true,
@@ -102,10 +124,11 @@ const userProfile = async (req, res) => {
         })
     }
 }
-
+ 
 module.exports = {
     createAccount,
     login,
     logout,
     userProfile,
+   // refreshToken
 }

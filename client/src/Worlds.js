@@ -4,8 +4,10 @@ import React, { useState, useMemo, useEffect}  from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Snackbar } from '@mui/material';
 import { handleDelete, handleGet, handlePost } from './services/requests-service';
-import { checkAuth } from "./services/auth-service";
+import { checkAuth, handleLogout } from "./services/auth-service";
+import { minutesRemaining } from './services/session-service';
 export default function Worlds() {
+  const [minutes, setMinutes] = useState(minutesRemaining(Date.now()));
   const navigate = useNavigate()
   const [newWorld, setNewWorld] = useState({
     worldName: '',
@@ -30,9 +32,23 @@ export default function Worlds() {
   }
   
   useEffect(() => {
+    //to have it auto-check for token expiration, check if expiration time 
     document.title = "Worlds – Worldbuilding DB"
     getWorlds()
   }, [])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const decrease = minutes - 1;
+      setMinutes(decrease)
+    }, 60000) //every minute, reduce # of minutes left by 1
+    if(minutes === 0) {
+      console.log("clear interval condition reached");
+      clearInterval(interval)
+      handleLogout()
+      navigate("/login");
+    }
+  }, [minutes])
   
   const handleChange = (name, value) => {
     setNewWorld({...newWorld, [name]:value})
