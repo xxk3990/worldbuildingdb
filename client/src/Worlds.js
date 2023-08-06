@@ -31,7 +31,6 @@ export default function Worlds() {
   }
   
   useEffect(() => {
-    //to have it auto-check for token expiration, check if expiration time 
     document.title = "Worlds – Worldbuilding DB"
     getWorlds()
   }, [])
