@@ -8,11 +8,23 @@ const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
 const config = require(`${__dirname}/../config/config.js`)[env];
 const db = {};
+const { userModel } = require('./user');
+const {worldModel} = require('./world');
+const {locationModel} = require('./location')
+const bcrypt = require("bcrypt");
+const { characterModel } = require('./character');
 
-const sequelize = new Sequelize('worldbuildingdb', 'postgres', 'postgres', {
+const sequelize = new Sequelize(config.database, config.username, config.password, {
   dialect: 'postgres',
   host: 'localhost',
 })
+
+const models = {
+  User: userModel(sequelize, Sequelize.DataTypes),
+  World: worldModel(sequelize, Sequelize.DataTypes),
+  Location: locationModel(sequelize, Sequelize.DataTypes),
+  Character: characterModel(sequelize, Sequelize.DataTypes)
+}
 
 fs
   .readdirSync(__dirname)
@@ -24,16 +36,57 @@ fs
       file.indexOf('.test.js') === -1
     );
   })
-  .forEach(file => {
-    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
-    db[model.name] = model;
+  .forEach(() => {
+    for(const m of Object.values(models)) {
+      db[m.name] = m;
+    }
+    // .forEach(model => {
+     
+    // })
+    
   });
 
-Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-});
+  models.User.hasMany(models.World, {
+    as: 'worlds_created',
+    foreignKey: 'user_uuid'
+  })
+
+  models.World.belongsTo(models.User, {
+    as: 'world_owner',
+    foreignKey:'user_uuid'
+  })
+
+  models.World.hasMany(models.Location, {
+    as: "locations_in_world",
+    foreignKey: 'world_uuid'
+  })
+
+  models.Location.belongsTo(models.World, {
+    as: "exists_in",
+    foreignKey: "world_uuid"
+  })
+
+  models.World.hasMany(models.Character, {
+    as: "characters",
+    foreignKey: "world_uuid"
+  })
+
+  models.Location.hasMany(models.Character, {
+    as: "characters",
+    foreignKey: "location_uuid"
+  })
+
+  models.Character.belongsTo(models.World, {
+    as: "exists_in",
+    foreignKey: "world_uuid"
+  })
+
+  models.Character.belongsTo(models.Location, {
+    as: "location",
+    foreignKey: "location_uuid"
+  })
+
+
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

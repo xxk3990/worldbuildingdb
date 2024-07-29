@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
+
+.Profile {
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logout-info {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.logout-info h4 {
+    margin: 0;
+}

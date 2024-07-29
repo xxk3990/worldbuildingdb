@@ -1,19 +1,17 @@
 const express = require('express');
-const router = require("./router")
-const {sequelize} = require('./models')
-const cors = require('cors')
-
+const cookieParser = require("cookie-parser")
+const {sequelize} = require('./models');
+const cors = require('cors');
+const { expressjwt: jwt } = require("express-jwt");
+const process = require('process')
+const router = require("./router");
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const app = express();
-
+app.use(cookieParser());
+app.use(cors({ origin: "http://localhost:3001", credentials:true}))
 app.use(express.json());
-app.use(cors({
-    origin: `*`
-}))
 
-// parse requests of content-type - application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true }));
 
 const connectToDB = async () => {
     console.log("connectToDB called")
@@ -27,12 +25,12 @@ const connectToDB = async () => {
 }
 
 (async () => {
-    connectToDB()
-    router(app)
-    app.listen(port, (err) => {
-        if(err) {
-            throw err;
-        }
-        console.log(`Listening on port ${port}`);
-    })
-})()
+    await connectToDB();
+})();
+router(app);
+app.listen(port, (err) => {
+    if(err) {
+        throw err;
+    }
+    console.log(`Listening on port ${port}`);
+});

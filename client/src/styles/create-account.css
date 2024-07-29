@@ -1,0 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
+
+.CreateAccount {
+    font-family: 'Noto Sans', sans-serif;
+}
+
+button {
+    cursor: pointer;
+}
