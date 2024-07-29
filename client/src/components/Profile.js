@@ -1,11 +1,10 @@
-import logo from './logo.svg';
-import './styles/profile.css';
+import logo from '../logo.svg'
+import '../styles/profile.css';
 import React, { useState, useEffect }  from 'react';
-import "./styles/profile.css"
 import { useNavigate } from 'react-router-dom';
-import { handleGet } from './services/requests-service';
-import { checkAuth } from './services/auth-service';
-import { minsTillLogout, sessionInterval } from './services/session-service';
+import { handleGet } from '../services/requests-service';
+import { checkAuth } from '../services/auth-service';
+import { minsTillLogout, sessionInterval } from '../services/session-service';
 export default function Profile() {
     const [userProfile, setUserProfile] = useState([]);
     const navigate = useNavigate()

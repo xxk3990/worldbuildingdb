@@ -1,5 +1,5 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from '../logo.svg'
+import '../App.css'
 import React, { useState, useMemo, useEffect}  from 'react';
 import { useNavigate } from 'react-router';
 

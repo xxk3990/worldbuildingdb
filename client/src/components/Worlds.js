@@ -1,11 +1,11 @@
-import logo from './logo.svg';
-import './styles/worlds.css'
+import logo from '../logo.svg'
+import '../styles/worlds.css'
 import React, { useState, useMemo, useEffect}  from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Snackbar } from '@mui/material';
-import { handleDelete, handleGet, handlePost } from './services/requests-service';
-import { checkAuth, handleLogout } from "./services/auth-service";
-import { sessionInterval, minsTillLogout } from './services/session-service';
+import { handleDelete, handleGet, handlePost } from '../services/requests-service';
+import { checkAuth, handleLogout } from "../services/auth-service";
+import { sessionInterval, minsTillLogout } from '../services/session-service';
 export default function Worlds() {
   const [minutes, setMinutes] = useState(minsTillLogout(Date.now()));
   const navigate = useNavigate()

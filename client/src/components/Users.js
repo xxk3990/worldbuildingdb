@@ -1,10 +1,10 @@
-import logo from './logo.svg';
-import './styles/users.css';
+import logo from '../logo.svg'
+import '../styles/users.css';
 import React, { useState, useMemo, useEffect}  from 'react';
 import { useNavigate } from 'react-router-dom';
-import { handleGet } from './services/requests-service';
-import { checkAuth } from './services/auth-service';
-import { minsTillLogout, sessionInterval } from './services/session-service';
+import { handleGet } from '../services/requests-service';
+import { checkAuth } from '../services/auth-service';
+import { minsTillLogout, sessionInterval } from '../services/session-service';
 
 export default function Users() {
   const [minutes, setMinutes] = useState(minsTillLogout(Date.now()));

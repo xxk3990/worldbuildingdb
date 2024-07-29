@@ -1,11 +1,11 @@
-import logo from './logo.svg';
-import './styles/locations.css'
+import logo from '../logo.svg'
+import '../styles/locations.css'
 import React, { useState, useMemo, useEffect}  from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Snackbar } from '@mui/material';
-import { handleGet, handlePost, handleDelete } from './services/requests-service';
-import { checkAuth } from './services/auth-service';
-import { minsTillLogout, sessionInterval } from './services/session-service';
+import { handleGet, handlePost, handleDelete } from '../services/requests-service';
+import { checkAuth } from '../services/auth-service';
+import { minsTillLogout, sessionInterval } from '../services/session-service';
 export default function Locations() {
   const [minutes, setMinutes] = useState(minsTillLogout(Date.now()));
   const navigate = useNavigate()

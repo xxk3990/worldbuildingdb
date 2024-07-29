@@ -19,6 +19,7 @@ const router = (app) => {
     app.post('/addLocation', mid.verifyRequestAuth, locs.addLocation)
     app.delete('/deleteLocation', mid.verifyRequestAuth, locs.deleteLocation)
     app.get("/characters", mid.verifyRequestAuth, chars.getCharacters)
+    app.get("/character", mid.verifyRequestAuth, chars.getCharacter)
     app.post("/addCharacter", mid.verifyRequestAuth, chars.addCharacter)
     app.delete("/deleteCharacter", mid.verifyRequestAuth, chars.deleteCharacter)
     app.post('/logout', mid.verifyRequestAuth, users.logout)

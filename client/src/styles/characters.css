@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
 
-.Characters {
+.Characters,
+.Character {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -9,7 +10,7 @@
 
 .characters-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(1, 1fr);
 }
 
@@ -35,4 +36,59 @@
 
 button {
     cursor: pointer;
+}
+
+.character-container {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+}
+
+.character-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+}
+
+.character-props {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    margin: 0;
+}
+
+.character-prop {
+    height: 50px;
+    padding-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.character-prop h4 {
+    margin: 0 20px 0 0;
+    padding: 0;
+}
+
+.character-abilities {
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.character-prop,
+.character-abilities {
+    width: 200px;
+    border: 1px solid black;
+    text-align: center;
+}
+
+
+.character-bio {
+    border: 1px solid black;
+    overflow-y: scroll;
+    width: 300px;
+}
+
+.character-bio h4 {
+    text-align: center;
 }

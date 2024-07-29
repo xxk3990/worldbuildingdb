@@ -1,11 +1,11 @@
-import logo from './logo.svg';
-import './styles/characters.css'
+import logo from '../logo.svg'
+import '../styles/characters.css'
 import React, { useState, useMemo, useEffect}  from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Snackbar } from '@mui/material';
-import { handleGet, handlePost, handleDelete } from './services/requests-service';
-import { checkAuth, handleLogout } from './services/auth-service';
-import { minsTillLogout, sessionInterval } from './services/session-service';
+import { handleGet, handlePost, handleDelete } from '../services/requests-service';
+import { checkAuth, handleLogout } from '../services/auth-service';
+import { minsTillLogout, sessionInterval } from '../services/session-service';
 export default function Characters() {
   const navigate = useNavigate()
   const [minutes, setMinutes] = useState(minsTillLogout(Date.now()));
@@ -237,6 +237,10 @@ const CharacterCard = (props) => {
       }
     }
   }
+  const navigateToCharacter = () => {
+    localStorage.setItem("character_uuid", chr.id)
+    navigate('/character')
+  }
   return(
     <section className="character-info">
       <Snackbar open={openSnackbar} autoHideDuration={1500} message="Deleting Character..." anchorOrigin={{horizontal: "center", vertical:"top"}}/>
@@ -246,6 +250,7 @@ const CharacterCard = (props) => {
       <p>Originally from: {chr.originally_from}</p>
       <p>Abilities: <br/>{chr.abilities}</p>
       <p>Bio: <br/>{chr.biography}</p>
+      <button onClick={navigateToCharacter}>More Info</button>
       <button type="button" className='delete-character-btn' onClick={deleteCharacter}>Delete</button>
     </section>
   )

@@ -18,6 +18,11 @@ const getCharacters = async (req, res) => {
     }
 }
 
+const getCharacter = async (req, res) => {
+    const character = await models.Character.findOne({where: {"id" : req.query.character}, raw: true })
+    return res.json(character);
+}
+
 const addCharacter = async (req, res) => {
     const overallWorld = await models.World.findOne({where: {'id': req.body.world}, raw:true})
     const homeLocation = await models.Location.findOne({where: {"location_name" : req.body.originally_from}, raw:true})
@@ -44,6 +49,7 @@ const deleteCharacter = async (req, res) => {
 
 module.exports = {
     getCharacters,
+    getCharacter,
     addCharacter,
     deleteCharacter
 }

@@ -1,8 +1,8 @@
-import logo from './logo.svg';
-import './styles/login.css';
+import logo from '../logo.svg'
+import '../styles/login.css';
 import React, { useState, useMemo, useEffect}  from 'react';
 import { Snackbar } from '@mui/material';
-import { handleLogin } from './services/auth-service';
+import { handleLogin } from '../services/auth-service';
 import { useNavigate } from 'react-router-dom';
 export default function Login() {
   const page = sessionStorage.getItem("page")
